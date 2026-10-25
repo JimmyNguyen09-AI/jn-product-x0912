@@ -1,0 +1,63 @@
+import {chromium,expect} from '@playwright/test';
+import assert from 'node:assert/strict';
+import {spawn} from 'node:child_process';
+import {randomBytes,scryptSync} from 'node:crypto';
+import {mkdir,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+const port=3014,origin=`http://localhost:${port}`;
+process.env.DATA_DIR=path.resolve('artifacts',`journal-test-${Date.now()}`);
+await mkdir(process.env.DATA_DIR,{recursive:true});
+const {db}=await import('../lib/db.ts');
+const email='author@example.test',password=randomBytes(24).toString('hex'),salt=randomBytes(16).toString('hex');
+db().prepare('INSERT INTO admins(id,email,passwordHash) VALUES(1,?,?)').run(email,`${salt}:${scryptSync(password,salt,64).toString('hex')}`);
+const server=spawn(process.execPath,['node_modules/next/dist/bin/next','dev','--port',String(port)],{env:{...process.env,NODE_ENV:'development',NEXT_DIST_DIR:'.next-qa',SITE_URL:origin},stdio:['ignore','pipe','pipe'],windowsHide:true});
+let serverLog='';server.stdout.on('data',x=>{serverLog=(serverLog+x).slice(-12000)});server.stderr.on('data',x=>{serverLog=(serverLog+x).slice(-12000)});
+let browser;
+const results=[];
+try{
+ for(let i=0;i<80;i++){try{if((await fetch(origin+'/admin/login')).ok)break}catch{}if(i===79)throw new Error('QA server did not become ready. '+serverLog);await new Promise(r=>setTimeout(r,500))}
+ browser=await chromium.launch({channel:'chrome',headless:true});
+ const anonymous=await browser.newContext({baseURL:origin});
+ assert.equal((await anonymous.request.get('/api/admin/stories')).status(),401);
+ assert.equal((await anonymous.request.post('/api/admin/stories',{headers:{origin},data:{}})).status(),401);
+ assert.equal((await anonymous.request.post('/api/admin/login',{headers:{origin:'https://untrusted.example'},data:{email,password}})).status(),403);
+ const admin=await browser.newContext({baseURL:origin,viewport:{width:1440,height:1000}});const page=await admin.newPage();const pageErrors=[];page.on('pageerror',e=>pageErrors.push(e.message));
+ await page.goto('/admin/login');await page.locator('#email').fill(email);await page.locator('#password').fill(password);await page.getByRole('button',{name:'Mở bàn viết'}).click();await page.waitForURL('**/admin');
+ const cookie=(await admin.cookies()).find(c=>c.name==='jn-session');assert(cookie?.httpOnly&&cookie.sameSite==='Strict');assert(!(await page.evaluate(()=>document.cookie)).includes('jn-session'));
+ await page.locator('#story-title-input').fill('A QA page kept private');await page.locator('#story-excerpt').fill('An isolated test entry; never written to the real database.');await page.locator('#story-body').fill('## A test heading\n\nThis is a private draft.\n\n<script>window.journalXSS=true</script>\n\n[Unsafe](javascript:alert(1))');
+ await page.getByRole('button',{name:'Lưu bản nháp',exact:true}).click();await page.getByText('Đã lưu bản nháp. Chỉ bạn có thể đọc.',{exact:true}).waitFor();
+ let records=(await (await admin.request.get('/api/admin/stories')).json()).stories;let story=records.find(s=>s.slug==='a-qa-page-kept-private');assert(story&&story.status==='draft');const oldVersion=story.version;
+ assert.equal((await anonymous.request.get(`/stories/${story.slug}`)).status(),404);
+ const upload=await admin.request.post('/api/admin/uploads',{headers:{origin},multipart:{file:{name:'cover.webp',mimeType:'image/webp',buffer:await (await import('node:fs/promises')).readFile('public/media/walk.webp')}}});assert.equal(upload.status(),201);const asset=await upload.json();
+ assert.equal((await anonymous.request.get(asset.url)).status(),404);
+ const invalid=await admin.request.post('/api/admin/uploads',{headers:{origin},multipart:{file:{name:'bad.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>')}}});assert.equal(invalid.status(),400);
+ const oversized=await admin.request.post('/api/admin/uploads',{headers:{origin},multipart:{file:{name:'large.webp',mimeType:'image/webp',buffer:Buffer.alloc(6*1024*1024+1)}}});assert.equal(oversized.status(),413);
+ const data=story=>Object.fromEntries(Object.entries(story).filter(([key])=>!['id','createdAt','updatedAt','publishedAt','opening'].includes(key)));
+ let update=await admin.request.patch(`/api/admin/stories/${story.id}`,{headers:{origin},data:{...data(story),cover:asset.url,coverAlt:'A figure walking on clouds.'}});assert.equal(update.status(),200);story=(await update.json()).story;
+ await page.reload();await page.getByRole('button',{name:/A QA page kept private/}).click();await page.getByRole('button',{name:'Xem tr\u01b0\u1edbc'}).click();assert(await page.locator('.editor-preview').getByRole('heading',{name:'A test heading'}).isVisible());await page.getByRole('button',{name:'\u0058u\u1ea5t b\u1ea3n \u2197',exact:true}).click();await page.getByText('Đã xuất bản. Trang viết đã có trong góc đọc chuyện.',{exact:true}).waitFor();
+ story=(await (await admin.request.get('/api/admin/stories')).json()).stories.find(s=>s.id===story.id);
+ assert.equal((await anonymous.request.get(`/stories/${story.slug}`)).status(),200);assert.equal((await anonymous.request.get(asset.url)).status(),200);
+ const publicPage=await anonymous.newPage();await publicPage.goto(`/stories/${story.slug}`);assert.equal(await publicPage.evaluate(()=>window.journalXSS),undefined);assert.equal(await publicPage.locator('a[href^="javascript:"]').count(),0);
+ assert.equal((await admin.request.patch(`/api/admin/stories/${story.id}`,{headers:{origin},data:{...data(story),version:oldVersion}})).status(),409);
+ assert.equal((await admin.request.patch(`/api/admin/stories/${story.id}`,{headers:{origin:'https://untrusted.example'},data:data(story)})).status(),403);
+ await page.screenshot({path:'artifacts/admin-1440.png'});
+ await page.setViewportSize({width:390,height:844});await page.screenshot({path:'artifacts/admin-390.png'});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ await page.getByRole('button',{name:'Gỡ xuất bản',exact:true}).click();await page.getByText('Đã lưu bản nháp. Chỉ bạn có thể đọc.',{exact:true}).waitFor();assert.equal((await anonymous.request.get(`/stories/${story.slug}`)).status(),404);assert.equal((await anonymous.request.get(asset.url)).status(),404);
+ story=(await (await admin.request.get('/api/admin/stories')).json()).stories.find(s=>s.id===story.id);update=await admin.request.patch(`/api/admin/stories/${story.id}`,{headers:{origin},data:{...data(story),status:'archived'}});assert.equal(update.status(),200);story=(await update.json()).story;assert.equal(story.status,'archived');update=await admin.request.patch(`/api/admin/stories/${story.id}`,{headers:{origin},data:{...data(story),status:'draft'}});assert.equal(update.status(),200);
+ await page.getByRole('button',{name:/\u0110\u0103ng xu\u1ea5t/}).click();await page.waitForURL('**/admin/login');assert.equal((await admin.request.get('/api/admin/stories')).status(),401);
+ results.push({admin:'login, HTTP-only session, draft privacy, upload, preview, publish, unpublish, archive/restore, optimistic concurrency, logout passed',security:'origin rejection, invalid and oversized uploads, safe Markdown and private assets passed'});
+ for(const width of [390,768,1440]){
+  const context=await browser.newContext({baseURL:origin,viewport:{width,height:900},hasTouch:width===390});const p=await context.newPage();p.on('pageerror',e=>pageErrors.push(e.message));
+  await p.goto('/');await p.waitForSelector('.clouds-enabled');await p.evaluate(()=>document.fonts.ready);assert.equal(await p.locator('.project-row').count(),0);await p.screenshot({path:`artifacts/journal-hero-${width}.png`});
+  await p.locator('#stories').scrollIntoViewIfNeeded();await p.waitForTimeout(500);await p.screenshot({path:`artifacts/journal-room-${width}.png`});assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await p.goto('/stories');await p.waitForTimeout(500);await p.screenshot({path:`artifacts/journal-library-${width}.png`});assert.equal(await p.locator('.story-row').count(),4);
+  await p.getByRole('link',{name:'Ch\u01b0\u01a1ng 2 \u00b7 M\u1ed9t b\u00e0n tay',exact:true}).click();await expect(p.locator('.story-row')).toHaveCount(1);await p.locator('#story-search').fill('no-matching-page');await p.getByRole('button',{name:'Tìm câu chuyện'}).click();await p.getByRole('heading',{name:'Chưa có trang viết phù hợp.'}).waitFor();
+  await p.goto('/stories/toward-the-light');await p.evaluate(()=>document.fonts.ready);await p.screenshot({path:`artifacts/journal-reader-${width}.png`});await p.getByRole('button',{name:'Đánh dấu',exact:true}).click();await p.getByRole('button',{name:'Đã đánh dấu ✓',exact:true}).waitFor();const font=await p.locator('.story-prose').evaluate(e=>parseFloat(getComputedStyle(e).fontSize));await p.getByRole('button',{name:'Tăng cỡ chữ'}).click();assert((await p.locator('.story-prose').evaluate(e=>parseFloat(getComputedStyle(e).fontSize)))>font);
+  await p.reload();await p.getByRole('button',{name:'Đã đánh dấu ✓',exact:true}).waitFor();assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await p.emulateMedia({reducedMotion:'reduce'});await p.goto('/');assert.equal(await p.locator('.enhanced').count(),0);assert(await p.locator('.beat').evaluateAll(es=>es.every(e=>getComputedStyle(e).opacity==='1')));assert(await p.locator('[data-fade]').evaluateAll(es=>es.every(e=>getComputedStyle(e).opacity==='1')));
+  await context.close();results.push({width,reading:'home, library, filters, search, reader, bookmark, text size, overflow, reduced motion passed'});
+ }
+ const nojs=await browser.newContext({baseURL:origin,javaScriptEnabled:false});const nj=await nojs.newPage();await nj.goto('/stories');assert(await nj.locator('.story-row').first().isVisible());await nj.goto('/stories/a-little-on-my-own');assert(await nj.locator('.story-prose').isVisible());await nojs.close();
+ for(let i=0;i<8;i++)assert.equal((await anonymous.request.post('/api/admin/login',{headers:{origin},data:{email,password:'wrong-password'}})).status(),401);assert.equal((await anonymous.request.post('/api/admin/login',{headers:{origin},data:{email,password:'wrong-password'}})).status(),429);
+ assert.deepEqual(pageErrors,[]);results.push({noJavaScript:true,loginRateLimit:true,pageErrors});await writeFile('artifacts/journal-results.json',JSON.stringify(results,null,2));console.log(JSON.stringify(results,null,2));
+}catch(e){console.error(e);await writeFile('artifacts/journal-test-server.log',serverLog);process.exitCode=1}finally{await browser?.close();server.kill();db().close()}

@@ -1,0 +1,24 @@
+@font-face{font-family:VietHand;src:url('/fonts/patrickhand.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:VietHeading;src:url('/fonts/pangolin.ttf') format('truetype');font-weight:400;font-display:swap}
+/* Template controls: lengths are full section heights; videos retain their full frame. */
+:root {
+  --paper: #fdfdfc;
+  --ink: #302e2a;
+  --ink-muted: #68645d;
+  --line: #c8c3b9;
+  --annotation: #344c69;
+  --sunflower: #bd8e24;
+  --reading-font: VietHand, "Segoe Print", cursive;
+  --heading-font: VietHeading, cursive;
+  --closing-font: VietHeading, cursive;
+  --hero-length: 310svh;
+  --trust-length: 340svh;
+  --bloom-length: 390svh;
+}
+@media (max-width: 600px) {
+  :root {
+    --hero-length: 270svh;
+    --trust-length: 285svh;
+    --bloom-length: 320svh;
+  }
+}
