@@ -9,15 +9,17 @@
     "lint": "eslint",
     "test:story": "node scripts/check-story.mjs",
     "test:journal": "node scripts/check-journal.mjs",
-    "test:thread": "node scripts/check-thread.mjs",
     "test:family": "node scripts/check-family.mjs",
+    "test:chapters": "node scripts/check-chapter-links.mjs",
     "admin:setup": "node scripts/admin-setup.mjs",
-    "backup": "node scripts/backup.mjs"
+    "db:migrate": "node scripts/migrate-neon.mjs",
+    "backup": "node scripts/backup-postgres.mjs"
   },
   "dependencies": {
     "@animate-ui/react": "^2.2.1",
     "motion": "^14.6.0",
     "next": "16.4.3",
+    "pg": "^8.23.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-markdown": "^10.1.0",
@@ -27,9 +29,12 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.11",
+    "@electric-sql/pglite-socket": "^0.2.14",
     "@playwright/test": "^1.64.1",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^24.19.2",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

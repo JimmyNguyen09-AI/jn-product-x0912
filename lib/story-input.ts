@@ -20,7 +20,7 @@ export const storyInput = z
     version: z.number().int().positive().optional(),
   })
   .strict();
-export function validateStory(value: unknown) {
+export async function validateStory(value: unknown) {
   const result = storyInput.safeParse(value);
   if (!result.success)
     throw new HttpError(
@@ -48,7 +48,7 @@ export function validateStory(value: unknown) {
     const match = /^\/media\/uploads\/([a-f0-9-]{36})\.webp$/.exec(asset);
     if (
       !match ||
-      !db().prepare("SELECT id FROM uploads WHERE id=?").get(match[1])
+      !(await db().prepare("SELECT id FROM uploads WHERE id=?").get(match[1]))
     )
       throw new HttpError(
         400,

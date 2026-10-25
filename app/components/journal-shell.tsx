@@ -18,7 +18,7 @@ export function JournalHeader({ admin = false }: { admin?: boolean }) {
         >
           <Link href="/">Trang đầu</Link>
           <Link href="/stories">Góc đọc chuyện</Link>
-          {admin && <Link href="/admin">Bàn viết</Link>}
+          <Link href="/admin">{admin ? "Bàn viết" : "Đăng nhập"}</Link>
         </nav>
       </header>
     </>

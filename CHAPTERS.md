@@ -32,6 +32,14 @@ Reduced motion dùng poster cùng toàn bộ chữ và đổi lớp ảnh ngay. 
 
 ## Kiểm tra
 
-`npm run test:family` dùng server localhost:3000; đổi TEST_URL nếu cần. Chrome Windows 390/768/1440px: scrub hai chiều, đứng yên/hold, reload, đổi breakpoint, ba mép ảnh phía sau bấm được, chọn liên tiếp, caption, lightbox, bàn phím, trả focus/cuộn, điều hướng, giảm chuyển động, JavaScript tắt và lỗi video. Kết quả và ảnh render ở artifacts/family-results.json, family-*.png và love-*.png. Đã chạy lại các bộ story/thread/journal, lint và production build.
+`npm run test:family` dùng server localhost:3000; đổi TEST_URL nếu cần. Chrome Windows 390/768/1440px: scrub hai chiều, đứng yên/hold, reload, đổi breakpoint, ba mép ảnh phía sau bấm được, chọn liên tiếp, caption, lightbox, bàn phím, trả focus/cuộn, điều hướng, giảm chuyển động, JavaScript tắt và lỗi video. Kết quả và ảnh render ở artifacts/family-results.json, family-*.png và love-*.png. Đã chạy lại các bộ story/family/journal, lint và production build.
 
 Chưa kiểm chứng Safari/iPhone hoặc Android thật, hay hosting production. Không deploy/publish.
+# Chapter reading paths
+
+All six chapters link to their own `/stories?topic=...` collection. The admin topic picker and public filters include `love` and `family`; PostgreSQL Neon now stores all six topics. The former SQLite data is imported with `npm run db:migrate` without rewriting stories. New collections stay empty until the author publishes stories into them.
+
+`app/components/chapter-notes.tsx` contains the Vietnamese editorial introductions, expandable reading notes, and chapter links. The first two afterwords follow the continuous walking-to-trust sequence, preserving its cloud transition. Animate UI reveals each text group once; reduced motion and no-JavaScript views keep it visible. The navigation pause button has been removed.
+
+Run `npm run test:chapters` against the local dev server (or set `TEST_URL`). This checks six reading paths, responsive layouts, disclosures, reduced motion and no-JavaScript access. `npm run test:journal` checks the PostgreSQL-backed authoring flow in an isolated database.
+

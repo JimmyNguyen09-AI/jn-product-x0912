@@ -3,8 +3,9 @@ import "./globals.css";
 import "./theme.css";
 import "./journey.css";
 import "./reading.css";
-import "./thread.css";
+import "./story-details.css";
 import "./chapters.css";
+import "./chapter-notes.css";
 import { MotionSystem } from "./components/motion-system";
 export const metadata: Metadata = {
   ...(process.env.SITE_URL

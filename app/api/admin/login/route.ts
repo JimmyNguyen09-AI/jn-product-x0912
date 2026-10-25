@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import {
   checkPassword,
   configured,
-  failedLogin,
   loginLimit,
   newSession,
   sessionCookie,
@@ -20,9 +19,9 @@ export const runtime = "nodejs";
 export async function POST(request: Request) {
   try {
     sameOrigin(request);
-    if (!configured())
+    if (!(await configured()))
       throw new HttpError(503, "Tài khoản quản trị chưa được thiết lập.");
-    const wait = loginLimit();
+    const wait = await loginLimit();
     if (wait)
       return Response.json(
         { error: "Bạn đã thử quá nhiều lần. Vui lòng thử lại sau." },
@@ -33,20 +32,19 @@ export async function POST(request: Request) {
       );
     const data = await readJson(request);
     if (
-      typeof data.email !== "string" ||
+      typeof data.username !== "string" ||
       typeof data.password !== "string" ||
-      data.email.length > 254 ||
+      data.username.length > 64 ||
       data.password.length > 256
     )
-      throw new HttpError(400, "Nhập địa chỉ email và mật khẩu.");
-    failedLogin();
-    if (!(await checkPassword(data.email.trim(), data.password))) {
-      throw new HttpError(401, "Email hoặc mật khẩu chưa đúng.");
+      throw new HttpError(400, "Nhập tên đăng nhập và mật khẩu.");
+    if (!(await checkPassword(data.username.trim(), data.password))) {
+      throw new HttpError(401, "Tên đăng nhập hoặc mật khẩu chưa đúng.");
     }
-    db()
+    await db()
       .prepare("DELETE FROM login_attempts WHERE bucket=?")
       .run("admin-login");
-    (await cookies()).set(sessionCookie, newSession(), {
+    (await cookies()).set(sessionCookie, await newSession(), {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",

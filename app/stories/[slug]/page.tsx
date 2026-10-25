@@ -14,7 +14,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const story = getPublicStory(slug);
+  const story = await getPublicStory(slug);
   if (!story) notFound();
   return story
     ? {
@@ -34,13 +34,13 @@ export default async function StoryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const story = getPublicStory(slug);
+  const story = await getPublicStory(slug);
   if (!story) notFound();
   const headings = Array.from(story.body.matchAll(/^##\s+(.+)$/gm), (m) => ({
     title: m[1],
     id: headingId(m[1]),
   }));
-  const related = listPublished({ limit: 24 })
+  const related = (await listPublished({ limit: 24 }))
     .stories.filter((s) => s.id !== story.id)
     .slice(0, 2);
   return (

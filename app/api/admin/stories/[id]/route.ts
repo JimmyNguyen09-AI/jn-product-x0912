@@ -15,8 +15,8 @@ export async function PATCH(
   try {
     await requireAdmin(request);
     const { id } = await params;
-    const data = validateStory(await readJson(request));
-    const existing = db()
+    const data = await validateStory(await readJson(request));
+    const existing = await db()
       .prepare("SELECT * FROM stories WHERE id=?")
       .get(id) as unknown as StoryEntry | undefined;
     if (!existing) throw new HttpError(404, "Không tìm thấy câu chuyện.");
@@ -26,16 +26,15 @@ export async function PATCH(
         "Câu chuyện đã được sửa ở tab khác. Hãy tải lại trước khi lưu.",
       );
     if (
-      db()
+      await db()
         .prepare("SELECT id FROM stories WHERE slug=? AND id<>?")
         .get(data.slug, id)
     )
       throw new HttpError(409, "Đường dẫn này đã được dùng cho một câu chuyện khác.");
     const now = new Date().toISOString(),
       database = db();
-    database.exec("BEGIN IMMEDIATE");
-    try {
-      const updated = database
+    await database.transaction(async tx => {
+      const updated = await tx
         .prepare(
           `UPDATE stories SET slug=?,title=?,excerpt=?,body=?,topic=?,status=?,cover=?,coverAlt=?,updatedAt=?,publishedAt=?,version=version+1 WHERE id=? AND version=?`,
         )
@@ -58,16 +57,12 @@ export async function PATCH(
           409,
           "Câu chuyện đã được sửa ở tab khác. Hãy tải lại trước khi lưu.",
         );
-      database
+      await tx
         .prepare("INSERT INTO audit(event,storyId,createdAt) VALUES(?,?,?)")
         .run(`story.${data.status}`, id, now);
-      database.exec("COMMIT");
-    } catch (e) {
-      database.exec("ROLLBACK");
-      throw e;
-    }
+    });
     return response({
-      story: database.prepare("SELECT * FROM stories WHERE id=?").get(id),
+      story: await database.prepare("SELECT * FROM stories WHERE id=?").get(id),
     });
   } catch (e) {
     return errorResponse(e);

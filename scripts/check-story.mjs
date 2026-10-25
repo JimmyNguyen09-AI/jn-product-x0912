@@ -262,8 +262,8 @@ try {
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   );
-  await nojs.locator(".margin-entries details summary").first().click();
-  assert.equal(await nojs.locator(".margin-entries details[open]").count(),1);
+  await nojs.locator(".chapter-notes details summary").first().click();
+  assert.equal(await nojs.locator(".chapter-notes details[open]").count(),1);
   await nojs.close();
   const errorPage = await browser.newPage();
   await errorPage.route("**/media/*.mp4", (r) => r.abort());

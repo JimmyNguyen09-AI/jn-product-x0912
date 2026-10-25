@@ -27,7 +27,7 @@ try{
   for(const p of [.1,.36,.65,.95,.36]){await lovePosition(page,p);const t=await page.locator('#almost-us video').evaluate(v=>v.currentTime);await page.waitForTimeout(250);assert.equal(await page.locator('#almost-us video').evaluate(v=>v.currentTime),t);}
   await lovePosition(page,.1);await page.screenshot({path:`artifacts/love-together-${width}.png`});await lovePosition(page,.36);await page.screenshot({path:`artifacts/love-fading-${width}.png`});await lovePosition(page,.8);await page.screenshot({path:`artifacts/love-alone-${width}.png`});
   await lovePosition(page,.9);const hold=await page.locator('#almost-us video').evaluate(v=>v.currentTime);await lovePosition(page,.96);assert.equal(await page.locator('#almost-us video').evaluate(v=>v.currentTime),hold);
-  assert.equal(await page.locator('#almost-us [data-thread], #family [data-thread]').count(),0);
+  assert.equal(await page.locator('[data-thread], .story-thread').count(),0);
   const media=await page.locator('.love .media').boundingBox();assert(Math.abs(media.width-(width-15))<20&&media.height>=890,'Love media fills the viewport container');
   await lovePosition(page,.65);await page.reload();await page.waitForSelector('.clouds-enabled');await page.waitForFunction(()=>{const s=document.getElementById('almost-us'),v=s.querySelector('video');const p=-s.getBoundingClientRect().top/(s.offsetHeight-s.querySelector('.scene-inner').offsetHeight);return v.readyState>=2&&!v.seeking&&Math.abs(v.currentTime-Math.min(1,p/.88)*v.duration)<.08});
   await page.locator('.album-stage').scrollIntoViewIfNeeded();await page.waitForTimeout(250);await selected(page,'home');assert.equal(largeRequests.length,0,'Original images should not load before opening the viewer');

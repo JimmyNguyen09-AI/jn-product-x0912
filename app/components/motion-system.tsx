@@ -30,6 +30,7 @@ export function Reveal({
       className={className}
       inView
       inViewOnce
+      inViewMargin="0px 0px -40px 0px"
       transition={transition.reveal}
     >
       {children}

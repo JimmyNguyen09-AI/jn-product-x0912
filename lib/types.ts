@@ -1,9 +1,11 @@
-export const topics = ["alone", "trust", "within", "becoming"] as const;
+export const topics = ["alone", "trust", "within", "love", "family", "becoming"] as const;
 export type Topic = (typeof topics)[number];
 export const topicNames: Record<Topic, string> = {
   alone: "Chương 1 · Những bước chân",
   trust: "Chương 2 · Một bàn tay",
   within: "Chương 3 · Những nghĩ suy",
+  love: "Chương 4 · Tình yêu dang dở",
+  family: "Chương 5 · Gia đình",
   becoming: "Chương 6 · Về phía ánh sáng",
 };
 export type StoryEntry = {

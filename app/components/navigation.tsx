@@ -3,13 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { chapters, motion } from "../content";
 import { InkButton } from "./motion-system";
-export default function Navigation({
-  paused,
-  onPause,
-}: {
-  paused: boolean;
-  onPause: () => void;
-}) {
+export default function Navigation() {
   const [open, setOpen] = useState(false);
   const nav = useRef<HTMLElement>(null);
   useEffect(() => {
@@ -82,14 +76,6 @@ export default function Navigation({
           </a>
         ))}
       </div>
-      <InkButton
-        className="motion-toggle"
-        aria-label={paused ? "Phát video nền" : "Tạm dừng video nền"}
-        aria-pressed={paused}
-        onClick={onPause}
-      >
-        <span aria-hidden="true">{paused ? "▷" : "Ⅱ"}</span>
-      </InkButton>
       <span className="reading-line" aria-hidden="true" />
     </nav>
   );

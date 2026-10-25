@@ -19,7 +19,7 @@ export default function LoginForm() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              email: fields.get("email"),
+              username: fields.get("username"),
               password: fields.get("password"),
             }),
           });
@@ -35,14 +35,16 @@ export default function LoginForm() {
     >
       <p className="eyebrow">Lối vào riêng</p>
       <h2>Chào bạn trở lại.</h2>
-      <label htmlFor="email">Địa chỉ email</label>
+      <label htmlFor="username">Tên đăng nhập</label>
       <input
-        type="email"
-        id="email"
-        name="email"
+        type="text"
+        id="username"
+        name="username"
         required
         autoComplete="username"
-        maxLength={254}
+        maxLength={64}
+        autoCapitalize="none"
+        spellCheck={false}
       />
       <label htmlFor="password">Mật khẩu</label>
       <input

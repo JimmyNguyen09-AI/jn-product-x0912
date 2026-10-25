@@ -2,19 +2,18 @@
 
 Latest addition: [Love and family chapters](CHAPTERS.md), including the supplied scrub video and interactive four-photo album. Run `npm run test:family` against the local server to check these chapters.
 
-A personal storytelling and reading website in **jn-product-x0912**. Nothing has been deployed. The interface is Vietnamese. See [MOTION-VI.md](MOTION-VI.md) for the latest chapter, thread, fog and localization changes.
+A personal storytelling and reading website in **jn-product-x0912**. Nothing has been deployed. The interface is Vietnamese. See [MOTION-VI.md](MOTION-VI.md) for the latest chapter, fog and localization changes.
 
 ## Run locally
 
-Use Node.js **24.12+** (native SQLite and TypeScript support), or a compatible newer version. Tests here ran on Node 26.1 and Chrome on Windows.
+Use Node.js **24.12+** (native TypeScript support), or a compatible newer version. Tests here ran on Node 26.1 and Chrome on Windows.
 
 ```sh
 npm ci
-npm run admin:setup
 npm run dev
 ```
 
-Open the URL printed by Next.js (normally http://localhost:3000). The setup command privately prompts for an email and a password of at least 14 characters; there is no default account or public registration. Sign in at `/admin/login`. Running setup again can reset the admin and invalidate all sessions after an explicit REPLACE confirmation. It never stores a plaintext password.
+Open the URL printed by Next.js (normally http://localhost:3000). Set `DATABASE_URL` in `.env` to the Neon connection string. The existing `jimmy` account signs in at `/admin/login`; there is no public registration. Use the footer login link to open the writing desk. Passwords are salted scrypt hashes, never source-code constants. `npm run admin:setup` can replace the single administrator through a hidden interactive password prompt (10-256 characters) and revokes all old sessions.
 
 ## Reading and writing
 
@@ -29,13 +28,14 @@ Animate UI supplies Fade reveals, button feedback and shared motion tokens; the 
 
 ## Persistent data and production configuration
 
-This backend uses Next.js Route Handlers and native SQLite, with uploads on disk. It targets **one Node service with persistent local storage**. An ephemeral/serverless filesystem or multiple independent replicas requires a different database/object-storage adapter.
+This backend uses Next.js Route Handlers and PostgreSQL Neon through `pg`. Stories, administrator credentials, sessions, rate limits, audit events and uploaded WebP bytes live in PostgreSQL. No local disk is needed for runtime persistence. Supplied illustration/video assets remain static files in public/.
 
-Copy `.env.example` to `.env.local` and configure:
-
-- `DATA_DIR`: absolute persistent writable directory (default `./data`). Contains `journal.sqlite`, WAL files and `uploads/`.
+- `DATABASE_URL`: required PostgreSQL connection string; keep it server-only. The role must be allowed to create schema/tables on first initialization and read/write them afterwards.
+- `DATABASE_SCHEMA`: optional, defaults to `jn_story`.
 - `SITE_URL`: exact public **HTTPS origin**, required for production admin mutations and canonical metadata.
-- `BACKUP_DIR`: private backup location, default `./backups`.
+- `BACKUP_DIR`: private snapshot directory, default `./backups`.
+
+`npm run db:migrate` imports the old local SQLite stories, images and audit records transactionally into Neon. It leaves SQLite intact, rejects conflicting stories, and never imports old credentials/sessions. It is safe to rerun.
 
 ```sh
 npm run build
@@ -44,7 +44,7 @@ npm start
 
 Place the service behind an HTTPS reverse proxy. Sessions are opaque, hashed in the database, HTTP-only, SameSite Strict and Secure in production, expiring after eight hours. Mutations verify Origin and authentication. Login has a shared attempt limit. Markdown HTML is disabled; upload types/signatures, sizes and decoded dimensions are checked, and accepted images are re-encoded to WebP with metadata removed. Draft-only uploaded images are not publicly served. Security headers are set in next.config.ts.
 
-Dockerfile and compose.yaml provide a non-root standalone Node service with persistent data/backup volumes and loopback-only port binding. They have not been executed: the Docker Linux daemon is unavailable in this environment. When using Docker, initialize the account with `docker compose exec journal node scripts/admin-setup.mjs`. Configure TLS/proxy and SITE_URL before use. No container, remote service or domain has been deployed.
+Dockerfile and compose.yaml provide a non-root standalone Node service with a private backup volume and Neon connection and loopback-only port binding. They have not been executed: the Docker Linux daemon is unavailable in this environment. When using Docker, initialize the account with `docker compose exec journal node scripts/admin-setup.mjs`. Configure TLS/proxy and SITE_URL before use. No container, remote service or domain has been deployed.
 
 ## Backup and restore
 
@@ -52,7 +52,7 @@ Dockerfile and compose.yaml provide a non-root standalone Node service with pers
 npm run backup
 ```
 
-This uses SQLite's online backup API and copies uploads into a timestamped private directory. Avoid concurrent publishing/uploading during backup for a consistent database-plus-media snapshot. Keep an off-host copy. Restore with the service stopped: preserve the current data directory, then copy the backup's `journal.sqlite` and `uploads/` into a fresh DATA_DIR (do not carry old WAL/SHM files over). Start with the same environment and verify the reading room and admin. Backup creation and SQLite integrity were checked locally; infrastructure disaster recovery remains deployment-specific.
+This creates a consistent PostgreSQL snapshot in a private JSON file, including image bytes as base64 and hashed admin credentials; sessions are excluded. Keep backups outside the public web directory. For full database recovery, use Neon restore/branch capabilities or PostgreSQL `pg_dump`/`pg_restore`; test recovery separately before relying on a backup. No backup or credentials are committed to Git.
 
 ## Checks and main files
 
@@ -64,7 +64,7 @@ npm run test:journal
 npm run test:story
 ```
 
-Journal tests start an isolated server on 3014 and use a separate disposable database under artifacts; they never create a real admin account. Both suites use installed Chrome via Playwright. Story tests accept TEST_URL and CHROME_PATH overrides.
+Journal tests start an isolated server on 3014 and use an isolated PGlite PostgreSQL engine through the PostgreSQL wire protocol; they never create a real admin account. Both suites use installed Chrome via Playwright. Story tests accept TEST_URL and CHROME_PATH overrides.
 
 Checks cover 390, 768 and 1440px; scroll seeking forward/backward/rapid/idle; navigation and reload synchronization; reduced motion; no-JavaScript reading; video/texture failure; keyboard navigation; draft and upload privacy; publishing lifecycle; stale-edit rejection; unsafe Markdown; origin protection and login limits. Screenshots and results are in ignored `artifacts/`. Physical iPhone/Safari, real TLS hosting, email recovery and load testing are not verified; recovery uses the local setup command, not an email service.
 

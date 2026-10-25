@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
   distDir: process.env.NEXT_DIST_DIR || ".next",
   output: "standalone",
-  serverExternalPackages: ["sharp"],
+  serverExternalPackages: ["sharp", "pg"],
   async headers() {
     return [
       {

@@ -19,7 +19,7 @@ export default async function StoriesPage({
   const params = await searchParams;
   const q = typeof params.q === "string" ? params.q.slice(0, 120) : "";
   const topic = typeof params.topic === "string" ? params.topic : "";
-  const result = listPublished({ q, topic, page: Number(params.page) || 1 });
+  const result = await listPublished({ q, topic, page: Number(params.page) || 1 });
   const link = (next: number) =>
     `/stories?${new URLSearchParams({ q, topic, page: String(next) })}`;
   return (
@@ -98,8 +98,8 @@ export default async function StoriesPage({
           <StoryRows stories={result.stories} />
         ) : (
           <div className="empty-reading">
-            <h3>Chưa có trang viết phù hợp.</h3>
-            <p>Thử một từ khác, hoặc xem lại tất cả câu chuyện.</p>
+            <h3>{!q && topics.includes(topic as (typeof topics)[number]) ? "Chương này đang chờ những trang viết mới." : "Chưa có trang viết phù hợp."}</h3>
+            <p>{!q && topics.includes(topic as (typeof topics)[number]) ? "Những câu chuyện sẽ xuất hiện ở đây khi được đăng. Trong lúc chờ, bạn có thể đọc các chương khác." : "Thử một từ khác, hoặc xem lại tất cả câu chuyện."}</p>
             <Link className="ink-link" href="/stories">
               Xem tất cả câu chuyện →
             </Link>

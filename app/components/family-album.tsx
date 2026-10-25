@@ -44,6 +44,7 @@ export default function FamilyAlbum() {
     mounted.current = true;
     const animationControls = controlsRef.current;
     const observer = new ResizeObserver(([entry]) => {
+      if (!mounted.current || !stage.current?.isConnected) return;
       compact.current = entry.contentRect.width < 650;
       if (!moving.current) orderRef.current.forEach((id, depth) => {
         controlsRef.current[id].set(photoPose(depth, compact.current));

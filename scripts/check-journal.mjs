@@ -7,9 +7,11 @@ import path from 'node:path';
 const port=3014,origin=`http://localhost:${port}`;
 process.env.DATA_DIR=path.resolve('artifacts',`journal-test-${Date.now()}`);
 await mkdir(process.env.DATA_DIR,{recursive:true});
-const {db}=await import('../lib/db.ts');
-const email='author@example.test',password=randomBytes(24).toString('hex'),salt=randomBytes(16).toString('hex');
-db().prepare('INSERT INTO admins(id,email,passwordHash) VALUES(1,?,?)').run(email,`${salt}:${scryptSync(password,salt,64).toString('hex')}`);
+const {startTestPostgres}=await import('./test-postgres.mjs');
+const stopDatabase=await startTestPostgres();
+const {db}=await import('../lib/postgres.ts');
+const username='test-author',password=randomBytes(24).toString('hex'),salt=randomBytes(16).toString('hex');
+await db().prepare('INSERT INTO admins(id,username,passwordHash) VALUES(1,?,?)').run(username,`${salt}:${scryptSync(password,salt,64).toString('hex')}`);
 const server=spawn(process.execPath,['node_modules/next/dist/bin/next','dev','--port',String(port)],{env:{...process.env,NODE_ENV:'development',NEXT_DIST_DIR:'.next-qa',SITE_URL:origin},stdio:['ignore','pipe','pipe'],windowsHide:true});
 let serverLog='';server.stdout.on('data',x=>{serverLog=(serverLog+x).slice(-12000)});server.stderr.on('data',x=>{serverLog=(serverLog+x).slice(-12000)});
 let browser;
@@ -20,9 +22,9 @@ try{
  const anonymous=await browser.newContext({baseURL:origin});
  assert.equal((await anonymous.request.get('/api/admin/stories')).status(),401);
  assert.equal((await anonymous.request.post('/api/admin/stories',{headers:{origin},data:{}})).status(),401);
- assert.equal((await anonymous.request.post('/api/admin/login',{headers:{origin:'https://untrusted.example'},data:{email,password}})).status(),403);
+ assert.equal((await anonymous.request.post('/api/admin/login',{headers:{origin:'https://untrusted.example'},data:{username,password}})).status(),403);
  const admin=await browser.newContext({baseURL:origin,viewport:{width:1440,height:1000}});const page=await admin.newPage();const pageErrors=[];page.on('pageerror',e=>pageErrors.push(e.message));
- await page.goto('/admin/login');await page.locator('#email').fill(email);await page.locator('#password').fill(password);await page.getByRole('button',{name:'Mở bàn viết'}).click();await page.waitForURL('**/admin');
+ await page.goto('/admin/login');await page.locator('#username').fill(username);await page.locator('#password').fill(password);await page.getByRole('button',{name:'Mở bàn viết'}).click();await page.waitForURL('**/admin');
  const cookie=(await admin.cookies()).find(c=>c.name==='jn-session');assert(cookie?.httpOnly&&cookie.sameSite==='Strict');assert(!(await page.evaluate(()=>document.cookie)).includes('jn-session'));
  await page.locator('#story-title-input').fill('A QA page kept private');await page.locator('#story-excerpt').fill('An isolated test entry; never written to the real database.');await page.locator('#story-body').fill('## A test heading\n\nThis is a private draft.\n\n<script>window.journalXSS=true</script>\n\n[Unsafe](javascript:alert(1))');
  await page.getByRole('button',{name:'Lưu bản nháp',exact:true}).click();await page.getByText('Đã lưu bản nháp. Chỉ bạn có thể đọc.',{exact:true}).waitFor();
@@ -58,6 +60,8 @@ try{
   await context.close();results.push({width,reading:'home, library, filters, search, reader, bookmark, text size, overflow, reduced motion passed'});
  }
  const nojs=await browser.newContext({baseURL:origin,javaScriptEnabled:false});const nj=await nojs.newPage();await nj.goto('/stories');assert(await nj.locator('.story-row').first().isVisible());await nj.goto('/stories/a-little-on-my-own');assert(await nj.locator('.story-prose').isVisible());await nojs.close();
- for(let i=0;i<8;i++)assert.equal((await anonymous.request.post('/api/admin/login',{headers:{origin},data:{email,password:'wrong-password'}})).status(),401);assert.equal((await anonymous.request.post('/api/admin/login',{headers:{origin},data:{email,password:'wrong-password'}})).status(),429);
+ const attempts=await Promise.all(Array.from({length:12},()=>anonymous.request.post('/api/admin/login',{headers:{origin},data:{username,password:'wrong-password'}})));
+ assert.equal(attempts.filter(r=>r.status()===401).length,8);
+ assert.equal(attempts.filter(r=>r.status()===429).length,4);
  assert.deepEqual(pageErrors,[]);results.push({noJavaScript:true,loginRateLimit:true,pageErrors});await writeFile('artifacts/journal-results.json',JSON.stringify(results,null,2));console.log(JSON.stringify(results,null,2));
-}catch(e){console.error(e);await writeFile('artifacts/journal-test-server.log',serverLog);process.exitCode=1}finally{await browser?.close();server.kill();db().close()}
+}catch(e){console.error(e);await writeFile('artifacts/journal-test-server.log',serverLog);process.exitCode=1}finally{await browser?.close();server.kill();await db().close();await stopDatabase()}

@@ -1,8 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { mkdir, writeFile, unlink } from "node:fs/promises";
-import path from "node:path";
 import sharp, { type OutputInfo } from "sharp";
-import { db, dataDirectory } from "@/lib/db";
+import { db } from "@/lib/db";
 import {
   requireAdmin,
   readBody,
@@ -52,22 +50,8 @@ export async function POST(request: Request) {
         "Không đọc được ảnh này. Chọn JPEG, PNG hoặc WebP dưới 24 megapixel.",
       );
     }
-    const id = randomUUID(),
-      filename = `${id}.webp`,
-      directory = path.join(dataDirectory, "uploads");
-    await mkdir(directory, { recursive: true, mode: 0o700 });
-    const target = path.join(directory, filename);
-    await writeFile(target, image, { flag: "wx", mode: 0o600 });
-    try {
-      db()
-        .prepare(
-          "INSERT INTO uploads(id,filename,width,height,createdAt) VALUES(?,?,?,?,?)",
-        )
-        .run(id, filename, info.width, info.height, new Date().toISOString());
-    } catch (e) {
-      await unlink(target);
-      throw e;
-    }
+    const id = randomUUID(), filename = `${id}.webp`;
+    await db().prepare("INSERT INTO uploads(id,filename,width,height,createdAt,content) VALUES(?,?,?,?,?,?)").run(id,filename,info.width,info.height,new Date().toISOString(),image);
     return response(
       {
         url: `/media/uploads/${filename}`,

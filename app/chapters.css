@@ -4,7 +4,6 @@
 .love .scene-inner{position:relative;max-width:none}
 .love .media{width:100%;max-width:none;margin:30px 0}
 .love .media-love{mix-blend-mode:multiply}
-.love .media-love .story-thread{display:none}
 .enhanced .media-love .static-poster{visibility:hidden}
 .love-heading{position:relative;z-index:2;text-align:center;margin:30px 0}
 .love-heading h2{font-family:var(--reading-font);font-size:25px;line-height:1.5;font-weight:400;margin-top:12px}

@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element -- Local SVG/WebP assets are already optimized; protected uploads must retain direct origin authentication and revocation. */
 import type { CSSProperties } from "react";
 import { media } from "../content";
-import StoryThread from "./story-thread";
 export function Media({ name }: { name: keyof typeof media }) {
   const asset = media[name];
   return (
@@ -48,7 +47,6 @@ export function Media({ name }: { name: keyof typeof media }) {
         tabIndex={-1}
         disablePictureInPicture
       />
-      {name !== "love" && <StoryThread scene={name} />}
       {name === "walk" && <div className="loop-fog" aria-hidden="true" />}
       <span className="media-status" role="status" />
     </div>

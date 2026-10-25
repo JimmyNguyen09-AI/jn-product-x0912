@@ -6,11 +6,9 @@ services:
       - "127.0.0.1:3000:3000"
     environment:
       SITE_URL: ${SITE_URL:?Set the actual HTTPS origin in SITE_URL}
-      DATA_DIR: /app/data
+      DATABASE_URL: ${DATABASE_URL:?Set the Neon connection string in DATABASE_URL}
       BACKUP_DIR: /app/backups
     volumes:
-      - journal-data:/app/data
       - journal-backups:/app/backups
 volumes:
-  journal-data:
   journal-backups:

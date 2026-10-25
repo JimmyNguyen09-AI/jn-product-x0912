@@ -16,7 +16,7 @@ export default async function AdminPage() {
     <>
       <JournalHeader admin />
       <main id="main" className="writing-page">
-        <WritingDesk initialStories={getAdminStories()} email={admin.email} />
+        <WritingDesk initialStories={await getAdminStories()} email={admin.username} />
       </main>
     </>
   );

@@ -28,7 +28,7 @@ export default async function LoginPage() {
             viết thành lời, rồi chia sẻ khi sẵn sàng.
           </p>
         </div>
-        {configured() ? (
+        {await configured() ? (
           <LoginForm />
         ) : (
           <section className="setup-notice">

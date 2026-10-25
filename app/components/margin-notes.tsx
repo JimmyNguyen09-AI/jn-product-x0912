@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Reveal } from "./motion-system";
-export function SceneReadingLink({ topic }: { topic: string }) {
+import { topics, type Topic } from "@/lib/types";
+export function SceneReadingLink({ topic }: { topic: Topic }) {
   return (
     <a className="scene-reading-link" href={`/stories?topic=${topic}`}>
-      <span>Một ghi chép bên lề</span>Đọc câu chuyện phía sau ↗
+      <span>Những trang viết phía sau</span>Đọc truyện chương {topics.indexOf(topic) + 1} ↗
     </a>
   );
 }

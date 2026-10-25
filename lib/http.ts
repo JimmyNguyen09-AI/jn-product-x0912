@@ -19,6 +19,8 @@ export function response(data: unknown, status = 200) {
 export function errorResponse(error: unknown) {
   if (error instanceof HttpError)
     return response({ error: error.message }, error.status);
+  if (error && typeof error === "object" && "code" in error && error.code === "23505")
+    return response({ error: "Đường dẫn này đã được dùng. Hãy chọn đường dẫn khác." }, 409);
   console.error(
     "Journal request failed:",
     error instanceof Error ? error.message : "Unknown error",

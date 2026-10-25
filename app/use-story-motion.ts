@@ -2,7 +2,7 @@
 "use client";
 import { useEffect, type RefObject } from "react";
 import { chapters, media, motion, type SceneName } from "./content";
-import {applyThread, fogOpacity} from "./thread-config";
+import { fogOpacity } from "./video-fog";
 const clamp = (n: number) => Math.min(1, Math.max(0, n));
 export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
   useEffect(() => {
@@ -94,7 +94,7 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
       }
       function update() {
         raf = 0;
-        if (!alive) return;
+        if (!alive || !page.isConnected) return;
         const clouds = cloudEnabled();
         page.classList.toggle("clouds-enabled", clouds);
         if (clouds) {
@@ -151,14 +151,6 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
               : name === "love" ? clamp(p / motion.love.holdStart) : p;
           if(name === "love") section.style.setProperty("--love-out", String(clamp((p-motion.love.fadeStart)/(1-motion.love.fadeStart))));
           section.style.setProperty("--video-progress", String(phase));
-          const thread = section.querySelector<SVGSVGElement>("[data-thread]");
-          const decoded = section.querySelector("video")!;
-          if(thread && name !== "love") {
-            thread.style.visibility = decoded.readyState >= 2 ? "visible" : "hidden";
-            if(name === "walk") applyThread(thread,name,p,0);
-            else if(decoded.readyState >= 2 && !decoded.seeking)
-              applyThread(thread,name,decoded.currentTime / decoded.duration,decoded.currentTime);
-          }
           section.querySelectorAll<HTMLElement>(".beat").forEach((beat, i) => {
             const [start, end] = motion.beats[name][i];
             let opacity = Math.min(
@@ -179,9 +171,6 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
             seek(video);
           }
         });
-        const noise = page.querySelector<HTMLElement>("#noise")!;
-        const noiseThread = noise.querySelector<SVGSVGElement>("[data-thread]");
-        if(noiseThread && !reduced) applyThread(noiseThread,"noise",clamp((innerHeight-noise.getBoundingClientRect().top)/(innerHeight+noise.offsetHeight)),0);
         page.style.setProperty(
           "--reading",
           `${clamp(scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight)) * 100}%`,
@@ -260,8 +249,7 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
             if (
               !reduced &&
               visible.has(v) &&
-              !document.hidden &&
-              page.dataset.paused !== "true"
+              !document.hidden
             )
               v.play().catch(() => {});
             else v.pause();
@@ -386,7 +374,6 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
       listen(window, "pageshow", schedule);
       listen(window, "hashchange", schedule);
       listen(document, "visibilitychange", playback);
-      listen(page, "playbackchange", playback);
       const sizes = new ResizeObserver(schedule);
       listen(compactVideo,"change",() => {
         const love = videos.find(v => v.dataset.name === "love");

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { storyCopy } from "./content";
 import { useStoryMotion } from "./use-story-motion";
 import Navigation from "./components/navigation";
@@ -9,12 +9,12 @@ import { Media, Beats } from "./components/scene-media";
 import ReadingRoom from "./components/reading-room";
 import {
   SceneReadingLink,
-  MarginNotes,
-  BecomingNotes,
 } from "./components/margin-notes";
+import { ChapterNotes } from "./components/chapter-notes";
+import { Reveal } from "./components/motion-system";
 import type { StorySummary } from "@/lib/types";
 import ClosingStatement from "./components/closing-statement";
-import { AQuietPause, NewPages } from "./components/quiet-sections";
+import { NewPages } from "./components/quiet-sections";
 import { AlmostUs, FamilyChapter } from "./components/new-chapters";
 export default function Story({
   stories,
@@ -26,20 +26,13 @@ export default function Story({
   year: number;
 }) {
   const root = useRef<HTMLDivElement>(null);
-  const [motionPaused, setMotionPaused] = useState(false);
   useStoryMotion(root);
-  useEffect(() => {
-    root.current?.dispatchEvent(new Event("playbackchange"));
-  }, [motionPaused]);
   return (
-    <div ref={root} className="sketchbook" data-paused={motionPaused}>
+    <div ref={root} className="sketchbook">
       <a className="skip-link" href="#story">
         Bỏ qua điều hướng, đến câu chuyện
       </a>
-      <Navigation
-        paused={motionPaused}
-        onPause={() => setMotionPaused(!motionPaused)}
-      />
+      <Navigation />
       <CloudTransition />
       <main id="story" tabIndex={-1}>
         <section
@@ -92,13 +85,14 @@ export default function Story({
             <SceneReadingLink topic="trust" />
           </div>
         </section>
-        <MarginNotes />
+        <ChapterNotes topic="alone" />
+        <ChapterNotes topic="trust" />
         <section id="noise" className="noise" aria-labelledby="noise-heading">
           <div className="noise-art">
             <span className="chapter-label">Chương 3 / Những nghĩ suy</span>
             <Media name="noise" />
           </div>
-          <div className="noise-copy">
+          <Reveal className="noise-copy">
             <p className="annotation">Yên lặng không phải lúc nào cũng bình yên.</p>
             <h2 id="noise-heading" className="preserve-lines">
               {storyCopy.noise.heading}
@@ -114,11 +108,13 @@ export default function Story({
             >
               <path d="M2 6Q70 1 166 5M18 9Q90 5 153 8" />
             </svg>
-          </div>
+          </Reveal>
         </section>
-        <AQuietPause />
+        <ChapterNotes topic="within" />
         <AlmostUs />
+        <ChapterNotes topic="love" />
         <FamilyChapter />
+        <ChapterNotes topic="family" />
         <section
           id="becoming"
           className="scene becoming"
@@ -137,7 +133,7 @@ export default function Story({
             </span>
           </div>
         </section>
-        <BecomingNotes />
+        <ChapterNotes topic="becoming" />
         <NewPages />
         <ReadingRoom stories={stories} total={total} />
         <ClosingStatement />
@@ -151,6 +147,7 @@ export default function Story({
           JN.
         </a>
         <span>© {year}</span>
+        <Link href="/admin">Đăng nhập · Bàn viết ↗</Link>
         <a href="#beginning">
           Về lại trang đầu <span aria-hidden="true">↗</span>
         </a>

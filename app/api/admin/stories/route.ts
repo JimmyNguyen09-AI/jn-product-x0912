@@ -12,7 +12,7 @@ import { validateStory } from "@/lib/story-input";
 export async function GET() {
   try {
     await requireAdmin();
-    return response({ stories: getAdminStories() });
+    return response({ stories: await getAdminStories() });
   } catch (e) {
     return errorResponse(e);
   }
@@ -20,15 +20,14 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     await requireAdmin(request);
-    const data = validateStory(await readJson(request));
-    if (db().prepare("SELECT id FROM stories WHERE slug=?").get(data.slug))
+    const data = await validateStory(await readJson(request));
+    if (await db().prepare("SELECT id FROM stories WHERE slug=?").get(data.slug))
       throw new HttpError(409, "Đường dẫn này đã được dùng cho một câu chuyện khác.");
     const id = randomUUID(),
       now = new Date().toISOString();
     const database = db();
-    database.exec("BEGIN IMMEDIATE");
-    try {
-      database
+    await database.transaction(async tx => {
+      await tx
         .prepare(
           `INSERT INTO stories(id,slug,title,excerpt,body,topic,status,cover,coverAlt,createdAt,updatedAt,publishedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`,
         )
@@ -46,16 +45,12 @@ export async function POST(request: Request) {
           now,
           data.status === "published" ? now : null,
         );
-      database
+      await tx
         .prepare("INSERT INTO audit(event,storyId,createdAt) VALUES(?,?,?)")
         .run("story.created", id, now);
-      database.exec("COMMIT");
-    } catch (e) {
-      database.exec("ROLLBACK");
-      throw e;
-    }
+    });
     return response(
-      { story: database.prepare("SELECT * FROM stories WHERE id=?").get(id) },
+      { story: await database.prepare("SELECT * FROM stories WHERE id=?").get(id) },
       201,
     );
   } catch (e) {

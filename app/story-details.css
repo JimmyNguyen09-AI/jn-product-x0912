@@ -1,0 +1,10 @@
+.loop-fog{position:absolute;inset:0;pointer-events:none;z-index:3;opacity:0;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#fdfdfc 0%,#fdfdfc 45%,#fdfdfcdd 60%,transparent 90%);mask-image:radial-gradient(ellipse at center,#000 0%,#000 52%,transparent 90%)}
+.loop-fog::after{content:"";position:absolute;inset:-12%;background:url('/media/cloud-bank.webp') center/cover no-repeat;opacity:.28}
+.new-pages{max-width:1200px;margin:auto;padding:100px 8%;border-top:1px solid var(--line)}
+.new-pages h2{font-family:var(--heading-font);font-size:clamp(36px,4vw,58px);line-height:1.35;margin:30px 0}
+.new-pages-columns{display:grid;grid-template-columns:1fr 1fr;gap:10%;line-height:1.9}
+.new-pages .ink-link{margin-top:20px}
+.menu-toggle,.chapter-links a{white-space:nowrap}
+.noise h2,.reading-room h2,.story-row h3,.library-intro h1,.reader-title h1,.desk-heading h1,.new-pages h2,.closing h2,.margin-title h2{font-weight:700}
+@media(max-width:600px){.new-pages{padding:75px 8%}.new-pages-columns{grid-template-columns:1fr;gap:28px}}
+@media(prefers-reduced-motion:reduce){.loop-fog{display:none}}

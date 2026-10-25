@@ -1,6 +1,7 @@
 import { storyCopy } from "../content";
 import { Beats, Media } from "./scene-media";
 import { Reveal } from "./motion-system";
+import { SceneReadingLink } from "./margin-notes";
 import FamilyAlbum from "./family-album";
 
 export function AlmostUs() {
@@ -9,6 +10,7 @@ export function AlmostUs() {
       <Media name="love" />
       <header className="love-heading"><p className="chapter-label">Chương 4 / Tình yêu dang dở</p><h2 id="love-heading" className="annotation">Almost, us.</h2></header>
       <Beats lines={storyCopy.love}/>
+      <SceneReadingLink topic="love" />
     </div>
   </section>;
 }
