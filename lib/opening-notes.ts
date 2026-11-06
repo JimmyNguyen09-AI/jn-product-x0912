@@ -1,79 +1,79 @@
 // Only the themes supplied by the author; no additional biographical events.
 export const openingNotes = [
-  {slug:"a-little-on-my-own",oldTitle:"A little on my own",title:"Những bước chân một mình",topic:"alone",excerpt:"Một mình và mong được kết nối không phải hai điều trái ngược. Câu chuyện của tôi bắt đầu ở giữa hai cảm giác ấy.",body:`## Một chỗ để bắt đầu
+  {slug:"a-little-on-my-own",oldTitle:"A little on my own",title:"Những bước chân một mình",topic:"alone",excerpt:"Một mình mà vẫn mong có ai đó, hai điều này không cãi nhau đâu. Chuyện của tôi bắt đầu ở đúng khoảng giữa ấy.",body:`## Bắt đầu từ chỗ này
 
-Tôi vẫn thường bước đi một mình. Không phải vì chưa từng muốn có ai ở bên. Tôi chỉ vẫn tìm kiếm một bàn tay có thể tin tưởng.
+Tôi vẫn hay đi một mình. Không phải vì chưa từng muốn có ai bên cạnh. Chỉ là tôi vẫn đang tìm một bàn tay để tin.
 
-Ở một mình và không muốn được thấu hiểu là hai điều khác nhau. Tôi có thể quen với khoảng lặng của mình, mà vẫn mong một ngày có người bước vào đó. Hai cảm giác ấy cùng tồn tại, không cần phải chọn bỏ điều nào.
+Ở một mình và không muốn ai hiểu mình là hai chuyện khác nhau. Tôi quen với khoảng lặng của mình rồi, quen đến mức thấy dễ chịu. Nhưng vẫn có những buổi tối tôi mong ai đó bước vào đó, ngồi xuống, chẳng cần nói gì. Hai cái mong ấy sống chung được. Tôi không phải chọn bỏ cái nào.
 
-## Khoảng trống bên cạnh
+## Chỗ trống bên cạnh
 
-Người đi giữa những đám mây là hình ảnh mở đầu. Nó không phải lời kết luận rằng tôi sẽ mãi như thế. Chỉ là một cách thành thật để bắt đầu: một người vẫn đang bước tiếp, với một khoảng trống bên cạnh.
+Người đi giữa những đám mây là hình đầu tiên bạn thấy. Tôi không vẽ nó để nói rằng mình sẽ mãi như thế. Chỉ muốn bắt đầu cho thật: một người vẫn đang bước, và bên cạnh còn một chỗ trống.
 
-Tôi không cần lấp đầy khoảng trống ấy bằng một lời giải thích. Có những điều cần thời gian mới nói thành lời được.
+Tôi không vội lấp chỗ trống ấy bằng một lời giải thích. Có những chuyện phải để lâu mới nói ra được thành lời. Tôi đang học cách để nó ở đó, không che đi.
 
-## Một khởi đầu chưa khép lại
+## Một đoạn mở chưa khép
 
-Những trang này bắt đầu bằng sự một mình, nhưng không dừng ở đó. Phần tiếp theo là lúc tôi đưa tay ra: một cử chỉ nhỏ, chứa cả hy vọng lẫn sự mong manh của việc tin ai đó trước khi biết mình sẽ được đáp lại thế nào.
+Mấy trang này bắt đầu bằng sự một mình, nhưng không dừng ở đó. Trang sau là lúc tôi đưa tay ra. Một cử chỉ nhỏ thôi, mà trong đó có cả hy vọng lẫn cái run run của việc tin ai trước khi biết người ta sẽ làm gì với niềm tin ấy.
 
-> Tôi chỉ vẫn tìm kiếm một bàn tay để tin tưởng.`},
-  {slug:"a-hand-i-could-trust",oldTitle:"A hand I could trust",title:"Một bàn tay để tin tưởng",topic:"trust",excerpt:"Đưa tay ra là một cử chỉ nhỏ, nhưng bên trong có hy vọng, có ngập ngừng và có mong muốn được đáp lại.",body:`## Khi tôi đưa tay ra
+> Chỉ là tôi vẫn đang tìm một bàn tay để tin.`},
+  {slug:"a-hand-i-could-trust",oldTitle:"A hand I could trust",title:"Một bàn tay để tin",topic:"trust",excerpt:"Đưa tay ra là một cử chỉ nhỏ. Nhưng bên trong nó có hy vọng, có ngập ngừng, và có cái mong rất thật là được nắm lại.",body:`## Lúc tôi đưa tay ra
 
-Vậy nên, tôi đã đưa tay ra. Tôi nghĩ niềm tin sẽ được đáp lại. Có những bàn tay đã dạy tôi điều khác.
+Thế nên tôi đưa tay ra. Tôi cứ tin là mình sẽ được nắm lại. Có những bàn tay dạy tôi điều ngược lại.
 
-Khoảng cách giữa hai bàn tay có thể chứa nhiều hơn những gì mắt nhìn thấy. Trong câu chuyện này, đó là mong muốn được kết nối, rồi là tổn thương khi gặp sự phản bội.
+Khoảng cách giữa hai bàn tay chứa nhiều hơn những gì mắt thấy. Ở đoạn này của câu chuyện, nó là cái mong được gần ai đó, rồi là cái đau khi nhận ra mình đã tin nhầm chỗ.
 
-## Điều hình ảnh chưa kể
+## Điều bức vẽ không kể
 
-Tôi không muốn giải thích đến tận cùng mọi chi tiết của tổn thương. Có chỗ để hình ảnh tự nói. Cũng có chỗ để tôi quyết định điều gì vẫn thuộc về riêng mình.
+Tôi không định kể đến tận cùng chuyện mình bị tổn thương ra sao. Có chỗ để hình ảnh tự nói. Và có chỗ tôi muốn giữ lại cho riêng mình, không phải vì giấu, mà vì nó vẫn là của tôi.
 
-Điều ở lại là những câu hỏi. Là sự không chắc chắn. Là những khoảnh khắc tôi cứ quay về trong đầu, dù chuyện đã qua.
+Cái còn lại là những câu hỏi. Là cảm giác không chắc gì nữa. Là mấy khoảnh khắc tôi cứ quay về trong đầu, dù chuyện đã xong từ lâu.
 
 ## Sau một cử chỉ
 
-Đây là một phần câu chuyện, không phải toàn bộ con người tôi. Nỗi đau không cần biến mất hoàn toàn thì trang tiếp theo mới được mở ra.
+Đây là một phần câu chuyện, không phải toàn bộ tôi. Nỗi đau không cần biến mất hẳn thì trang sau mới mở ra được. Tôi mang nó theo, nhẹ hơn một chút mỗi lần kể.
 
-Những dòng sau sẽ đi vào bên trong, đến nơi các ý nghĩ trở nên ồn ào khi mọi thứ bên ngoài tưởng như yên lặng.
+Những dòng tiếp theo sẽ đi vào bên trong, đến chỗ mọi suy nghĩ trở nên ồn ào trong khi bên ngoài tưởng như chẳng có gì.
 
-> Có những bàn tay đã dạy tôi điều khác.`},
-  {slug:"when-the-quiet-felt-crowded",oldTitle:"When the quiet felt crowded",title:"Khi yên lặng cũng chật chội",topic:"within",excerpt:"Từng lời nói. Từng khoảng ngừng. Những điều đáng lẽ mình nên nói. Một trang dành cho những nghĩ suy chưa chịu rời đi.",body:`## Yên lặng chưa chắc là bình yên
+> Có những bàn tay dạy tôi điều ngược lại.`},
+  {slug:"when-the-quiet-felt-crowded",oldTitle:"When the quiet felt crowded",title:"Khi yên lặng cũng chật chội",topic:"within",excerpt:"Từng câu đã nói. Từng khoảng ngừng. Những câu lẽ ra nên nói mà thôi. Một trang cho những suy nghĩ chưa chịu đi ngủ.",body:`## Yên lặng chưa chắc là yên
 
-Tôi nghĩ lại từng khoảnh khắc. Từng lời nói. Những điều đáng lẽ mình nên nói.
+Tôi tua lại từng khoảnh khắc. Từng câu đã nói. Những câu lẽ ra nên nói mà thôi.
 
-Đến khi cả yên lặng cũng trở nên chật chội.
+Đến lúc cả yên lặng cũng thấy chật.
 
-## Một ý nghĩ quay về
+## Một ý nghĩ cứ quay về
 
-Nghĩ quá nhiều không phải lúc nào cũng trông có vẻ bận rộn. Trong bức vẽ, người nằm yên trong khi những nét chì xung quanh vẫn chuyển động. Một cơ thể im lặng, một tâm trí khó ngừng lại.
+Nghĩ nhiều không phải lúc nào cũng trông bận rộn. Trong bức vẽ, người nằm yên, còn mấy nét chì quanh người vẫn cứ chạy. Thân thể im, đầu thì không chịu dừng.
 
-Tôi cứ trở về chuyện đã xảy ra, tìm một câu nói khác hoặc một ý nghĩa khác. Việc nghĩ đi nghĩ lại đôi khi giống như đang tiến lên, dù thực ra tôi vẫn vòng quanh một chỗ.
+Tôi hay quay lại chuyện đã qua, thử tìm một câu nói khác, một cách hiểu khác. Nghĩ đi nghĩ lại đôi khi có cảm giác như mình đang tiến lên. Thật ra là tôi đang đi vòng quanh một chỗ, mòn cả lối.
 
 ## Chừa ra một chút chỗ
 
-Viết những điều này xuống không có nghĩa là tôi đã giải quyết được tất cả. Tôi chỉ đang cho những ồn ào một đường nét. Một trang giấy có thể giữ một điều gì đó mà không buộc nó phải trở thành câu trả lời hoàn hảo.
+Viết mấy thứ này xuống không có nghĩa là tôi đã gỡ xong. Tôi chỉ đang cho cái ồn ào ấy một hình dạng, để nhìn nó rõ hơn. Một trang giấy giữ được một điều gì đó mà không ép nó phải thành câu trả lời.
 
-Sau hình ảnh này còn một hình ảnh khác: một bông hoa chưa ngừng lớn lên. Tôi muốn dành chỗ cho điều đó nữa.
+Sau bức vẽ này còn một bức khác: một bông hoa vẫn đang lớn. Tôi muốn chừa chỗ cho cả điều đó nữa.
 
-> Rồi những ồn ào chuyển vào bên trong.`},
-  {slug:"toward-the-light",oldTitle:"Toward the light",title:"Về phía ánh sáng",topic:"becoming",excerpt:"Có những đổi thay bắt đầu trước khi ta nhìn thấy. Bông hướng dương giữ lại cho tôi khả năng ấy.",body:`## Trước khi có sắc vàng
+> Rồi tiếng ồn chuyển hết vào trong.`},
+  {slug:"toward-the-light",oldTitle:"Toward the light",title:"Về phía ánh sáng",topic:"becoming",excerpt:"Có những đổi thay bắt đầu từ trước khi mình nhìn thấy. Bông hướng dương giữ cho tôi niềm tin nhỏ ấy.",body:`## Trước khi có màu vàng
 
-Đã có lúc, tôi nghĩ mình không thể lớn thêm nữa.
+Có dạo tôi nghĩ mình chẳng lớn thêm được nữa.
 
-Bông hướng dương bắt đầu trong đen trắng, với cái đầu cúi xuống. Tôi chọn nó làm hình ảnh của mình: đã trải qua tổn thương, nhưng không vì thế mà mọi điều kết thúc.
+Bông hướng dương bắt đầu bằng đen trắng, đầu cúi xuống. Tôi chọn nó làm hình của mình: đã từng bị làm đau, nhưng không vì thế mà mọi thứ dừng lại ở đó.
 
-## Ở nơi chẳng ai nhìn thấy
+## Ở chỗ không ai nhìn
 
-Có những đổi thay diễn ra ở nơi chẳng ai nhìn thấy.
+Hoá ra có những thứ đổi thay ở chỗ không ai nhìn.
 
-Không có một khoảnh khắc duy nhất khiến mọi thứ bỗng dễ dàng. Sự thay đổi đến chậm. Một chút chuyển động, một dáng đứng khác, rồi một màu sắc chưa từng có ở khung hình đầu.
+Không có một khoảnh khắc nào làm mọi thứ bỗng dễ. Đổi thay đến chậm, chậm đến mức tôi gần như không nhận ra. Một chút chuyển động. Một dáng đứng khác. Rồi một màu chưa từng có ở khung hình đầu.
 
 ## Còn chỗ cho những trang sau
 
-Rồi từng chút một, tôi tìm về phía ánh sáng.
+Rồi từng chút, tôi quay về phía ánh sáng.
 
-Bông hoa không xóa những trang trước. Nó thuộc về cùng một câu chuyện với sự một mình, niềm tin và những nghĩ suy. Một câu chuyện vẫn chưa viết xong.
+Bông hoa không xoá những trang trước. Nó nằm chung một câu chuyện với sự một mình, với niềm tin, với những đêm nghĩ nhiều. Một câu chuyện tôi vẫn chưa viết xong, và cũng chưa muốn viết xong.
 
-Góc đọc này dành cho những điều tôi sẽ chọn viết tiếp. Tôi có thể thêm một trang mà chưa cần quyết định trước đoạn kết.
+Góc đọc này là chỗ cho những điều tôi sẽ chọn viết tiếp. Tôi có thể thêm một trang mà chưa cần biết đoạn kết sẽ ra sao.
 
-> Những điều phía trước vẫn còn để ngỏ.`},
+> Phía trước vẫn còn để ngỏ.`},
 ];

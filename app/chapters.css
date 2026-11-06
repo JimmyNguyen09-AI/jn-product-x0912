@@ -23,7 +23,7 @@
 .album-instruction{text-align:center;font-size:23px;color:var(--annotation);padding:0 20px}
 .album-instruction span{display:block;font-size:16px;color:var(--ink-muted);margin-top:5px}
 .album-stage{position:relative;height:700px;width:100%;overflow:clip;isolation:isolate;--photo-width: min(52vw,560px)}
-.album-photo{display:block;position:absolute;left:50%;top:52%;translate:-50% -50%;width:var(--photo-width);padding:38px 12px 42px;background:#fffefb;border:1px solid #e3dfd6;box-shadow:0 2px 5px #302e2a1c,0 10px 16px -14px #302e2a60;cursor:pointer;color:var(--ink);font:inherit;will-change:transform;touch-action:pan-y}
+.album-photo{display:block;position:absolute;left:50%;top:52%;translate:-50% -50%;width:var(--photo-width);padding:38px 12px 42px;background:#fffefb;border:1px solid #e3dfd6;box-shadow:0 2px 5px #302e2a1c,0 10px 16px -14px #302e2a60,0 22px 18px -20px #302e2a3d;cursor:pointer;color:var(--ink);font:inherit;will-change:transform;touch-action:pan-y}
 .album-photo img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:#f1eee7}
 .memory-label{position:absolute;top:5px;left:14px;right:14px;text-align:left;font-size:19px;line-height:25px;white-space:nowrap}
 .album-photo[data-depth="3"] .memory-label{text-align:right}
@@ -66,3 +66,26 @@
  .memory-viewer{width:calc(100% - 20px);max-height:calc(100dvh - 20px)}.viewer-sheet{padding:14px 12px}.viewer-topline{font-size:18px}.viewer-image-wrap{height:min(60dvh,calc((100vw - 44px) * .75))}.viewer-sheet figcaption{font-size:22px;min-height:64px}.viewer-actions{gap:12px}.viewer-actions button{font-size:19px}
 }
 @media(max-height:560px) and (min-width:601px){.love.enhanced .love-heading{top:17%}.love.enhanced .beats{top:32%;font-size:26px}.viewer-image-wrap{height:48dvh}.viewer-sheet{padding:10px 20px}.viewer-sheet figcaption{margin:8px auto;font-size:19px}}
+
+/* ---------- Album micro-interactions ---------- */
+/* Tape corners: two translucent strips hold each print to the page. */
+.album-photo::before,.album-photo::after{content:"";position:absolute;top:-9px;width:52px;height:15px;background:#efe6cfa6;border:1px solid #d8ccae66;box-shadow:0 1px 1px #302e2a12;pointer-events:none}
+.album-photo::before{left:16px;rotate:-7deg}
+.album-photo::after{right:16px;rotate:6deg}
+/* Hover: the print tilts a hair and lifts off the stack. Motion owns
+ * `transform` (x, y, rotate), so the lift uses the individual properties. */
+.album-photo{transition:translate .3s cubic-bezier(.23,1,.32,1),rotate .3s cubic-bezier(.23,1,.32,1),box-shadow .3s cubic-bezier(.23,1,.32,1)}
+@media(hover:hover) and (pointer:fine){
+ .album-photo:hover{translate:-50% calc(-50% - 4px);rotate:.6deg;box-shadow:0 3px 6px #302e2a1f,0 16px 22px -14px #302e2a66,0 30px 24px -22px #302e2a40}
+ .album-photo.is-behind:hover{rotate:-.6deg}
+}
+/* Memory choices: a pressed-ink feel instead of a flat toggle. */
+.memory-choice{transition:background-color .2s,color .2s,border-color .2s,translate .15s cubic-bezier(.23,1,.32,1),box-shadow .2s}
+.memory-choice:hover{border-color:var(--ink-muted);background:#f6f3ec}
+.memory-choice:active{translate:0 1px}
+.memory-choice[aria-pressed="true"]{box-shadow:inset 0 1px 2px #0000003d,0 1px 0 #ffffff80}
+.memory-choice[aria-pressed="true"]:hover{background:var(--ink);border-color:var(--ink)}
+/* Caption: while a print is moving, the caption text softens, then settles. */
+.memory-caption>p:last-child{transition:color .3s}
+.album-stage[aria-busy="true"]~.memory-caption>p:last-child{color:var(--ink-muted)}
+@media(prefers-reduced-motion:reduce){.album-photo,.memory-choice,.memory-caption>p:last-child{transition:none}.album-photo:hover{translate:-50% -50%;rotate:none}}

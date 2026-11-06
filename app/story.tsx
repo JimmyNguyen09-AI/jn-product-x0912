@@ -16,6 +16,12 @@ import type { StorySummary } from "@/lib/types";
 import ClosingStatement from "./components/closing-statement";
 import { NewPages } from "./components/quiet-sections";
 import { AlmostUs, FamilyChapter } from "./components/new-chapters";
+import {
+  ChapterTurn,
+  InkDivider,
+  PaperFold,
+} from "./components/section-transition";
+import "./transitions.css";
 export default function Story({
   stories,
   total,
@@ -85,21 +91,24 @@ export default function Story({
             <SceneReadingLink topic="trust" />
           </div>
         </section>
+        <ChapterTurn number="01" variant="wave" from="#f4f1e7" />
         <ChapterNotes topic="alone" />
+        <InkDivider variant="stitch" marker="02" />
         <ChapterNotes topic="trust" />
+        <InkDivider variant="loop" tone="blue" marker="03" />
         <section id="noise" className="noise" aria-labelledby="noise-heading">
           <div className="noise-art">
             <span className="chapter-label">Chương 3 / Những nghĩ suy</span>
             <Media name="noise" />
           </div>
           <Reveal className="noise-copy">
-            <p className="annotation">Yên lặng không phải lúc nào cũng bình yên.</p>
+            <p className="annotation">Yên lặng không hẳn là bình yên.</p>
             <h2 id="noise-heading" className="preserve-lines">
               {storyCopy.noise.heading}
             </h2>
             <p className="narrative preserve-lines">{storyCopy.noise.body}</p>
             <Link className="noise-reading-link" href="/stories?topic=within">
-              Một trang cho những nghĩ suy còn ở lại ↗
+              Một trang cho những nghĩ suy chưa chịu đi ↗
             </Link>
             <svg
               className="pencil-line"
@@ -110,11 +119,17 @@ export default function Story({
             </svg>
           </Reveal>
         </section>
+        <ChapterTurn number="03" variant="underline" />
         <ChapterNotes topic="within" />
+        <PaperFold marker="04" />
         <AlmostUs />
+        <ChapterTurn number="04" variant="loop" smudge />
         <ChapterNotes topic="love" />
+        <InkDivider variant="underline" marker="05" />
         <FamilyChapter />
+        <ChapterTurn number="05" variant="stitch" />
         <ChapterNotes topic="family" />
+        <PaperFold marker="06" />
         <section
           id="becoming"
           className="scene becoming"
@@ -133,9 +148,12 @@ export default function Story({
             </span>
           </div>
         </section>
+        <ChapterTurn number="06" variant="wave" tone="sunflower" smudge />
         <ChapterNotes topic="becoming" />
         <NewPages />
+        <PaperFold />
         <ReadingRoom stories={stories} total={total} />
+        <InkDivider variant="wave" tone="blue" />
         <ClosingStatement />
       </main>
       <footer>

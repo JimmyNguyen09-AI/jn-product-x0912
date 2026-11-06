@@ -94,13 +94,13 @@ export default async function StoryPage({
             <StoryMarkdown body={story.body} />
             <div className="reader-end">
               <span aria-hidden="true">✳</span>
-              <p>Cảm ơn bạn đã dành một chút thời gian ở đây.</p>
+              <p>Cảm ơn bạn đã ngồi lại đây một lúc.</p>
               <Link href="/stories">Tìm một trang khác ↗</Link>
             </div>
           </article>
         </div>
         <section className="next-pages" aria-labelledby="next-pages-title">
-          <p className="chapter-label">Để đoạn kết còn mở</p>
+          <p className="chapter-label">Để đoạn kết còn để ngỏ</p>
           <h2 id="next-pages-title">Đi tiếp một chút.</h2>
           <div>
             {related.map((s) => (

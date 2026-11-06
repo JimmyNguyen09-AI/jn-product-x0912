@@ -13,10 +13,10 @@ export const metadata: Metadata = {
     : {}),
   title: "JN — Một câu chuyện, vẫn đang viết.",
   description:
-    "Một cuốn sổ riêng về niềm tin, những nghĩ suy và quá trình lớn lên. Đọc những câu chuyện phía sau hình ảnh.",
+    "Cuốn sổ riêng của tôi: về niềm tin, về những đêm nghĩ nhiều, về việc lớn lên. Những câu chuyện nằm phía sau mấy bức vẽ.",
   openGraph: {
     title: "JN — Một câu chuyện, vẫn đang viết.",
-    description: "Một cuốn sổ riêng. Những trang viết yên tĩnh, vẫn đang mở ra.",
+    description: "Một cuốn sổ riêng. Những trang viết lặng lẽ, vẫn đang mở ra.",
     type: "website",
   },
   twitter: {

@@ -98,7 +98,7 @@ export default function FamilyAlbum() {
       if (pending.current === null || pending.current === id)
         setAnnouncement(`${memories[id].label}. ${memories[id].caption}`);
     } catch {
-      if (mounted.current) setError("Chưa tải được ảnh này. Bạn thử chọn lại nhé.");
+      if (mounted.current) setError("Ảnh này chưa tải được. Bạn thử chọn lại nhé.");
     } finally {
       moving.current = false;
       if (mounted.current) {
@@ -143,8 +143,8 @@ export default function FamilyAlbum() {
 
   return <div className="family-album">
     <div className="album-interactive">
-      <p className="album-instruction">Pick a memory. <span>Bấm ảnh phía trước để xem lớn.</span></p>
-      <div ref={stage} className="album-stage" aria-label="Chồng bốn ảnh gia đình" aria-busy={busy}>
+      <p className="album-instruction">Pick a memory. <span>Chạm vào tấm phía trước để xem lớn.</span></p>
+      <div ref={stage} className="album-stage" aria-label="Bốn tấm ảnh gia đình xếp chồng" aria-busy={busy}>
         {memories.map((memory, index) => {
           const depth = order.indexOf(index), active = depth === 0;
           return <motion.button
@@ -158,7 +158,7 @@ export default function FamilyAlbum() {
             initial={photoPose(initialOrder.indexOf(index), false)}
             animate={controls[index]}
             tabIndex={active ? 0 : -1}
-            aria-label={active ? `Xem ảnh ${memory.label} kích thước lớn` : `Đưa ảnh ${memory.label} lên trước`}
+            aria-label={active ? `Xem lớn ảnh ${memory.label}` : `Đưa ảnh ${memory.label} lên trước`}
             onClick={event => active ? openViewer(index, event.currentTarget) : choose(index)}
           >
             <span className="memory-label">{memory.label}</span>
@@ -177,7 +177,7 @@ export default function FamilyAlbum() {
       <p className="sr-only" role="status" aria-atomic="true">{announcement}</p>
       <p className="album-error" role="alert">{error}</p>
     </div>
-    <noscript><style>{`.album-interactive{display:none!important}`}</style><div className="album-nojs">{memories.map((memory,index) => <figure key={memory.id}><img src={memoryThumbnail(index)} alt={memory.alt} width="960" height="720" loading="lazy"/><figcaption><strong>{memory.label}</strong><p>{memory.caption}</p><a href={memory.original}>Xem ảnh đầy đủ ↗</a></figcaption></figure>)}</div></noscript>
+    <noscript><style>{`.album-interactive{display:none!important}`}</style><div className="album-nojs">{memories.map((memory,index) => <figure key={memory.id}><img src={memoryThumbnail(index)} alt={memory.alt} width="960" height="720" loading="lazy"/><figcaption><strong>{memory.label}</strong><p>{memory.caption}</p><a href={memory.original}>Xem ảnh gốc ↗</a></figcaption></figure>)}</div></noscript>
     <dialog ref={dialog} className="memory-viewer" aria-label="Xem kỷ niệm gia đình" aria-describedby="viewer-caption" onCancel={event => { event.preventDefault(); closeViewer(); }} onClick={event => { if(event.target === event.currentTarget)closeViewer(); }} onKeyDown={event => {
       if(event.key === "Tab") {
         const buttons=Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>("button:not([disabled])"));
@@ -193,7 +193,7 @@ export default function FamilyAlbum() {
       {viewer !== null && <div className="viewer-sheet">
         <div className="viewer-topline"><span>{String(viewer+1).padStart(2,"0")} / 04 · {memories[viewer].label}</span><InkButton ref={closeButton} className="viewer-close" onClick={closeViewer} aria-label="Đóng ảnh">Đóng <span aria-hidden="true">×</span></InkButton></div>
         <figure><div className="viewer-image-wrap"><img className="viewer-preview" src={memoryThumbnail(viewer)} alt="" aria-hidden="true" width="960" height="720"/><img className="viewer-original" key={viewer} src={memories[viewer].original} alt={memories[viewer].alt} width="1448" height="1086" onLoad={event=>{event.currentTarget.dataset.ready="true";}}/></div><figcaption id="viewer-caption">{memories[viewer].caption}</figcaption></figure>
-        <div className="viewer-actions"><InkButton className="text-button" aria-label="Ảnh trước" onClick={() => setViewer((viewer+3)%4)}>← Ảnh trước</InkButton><span aria-hidden="true">Một khoảng thời gian được giữ lại.</span><InkButton className="text-button" aria-label="Ảnh tiếp theo" onClick={() => setViewer((viewer+1)%4)}>Ảnh sau →</InkButton></div>
+        <div className="viewer-actions"><InkButton className="text-button" aria-label="Ảnh trước" onClick={() => setViewer((viewer+3)%4)}>← Ảnh trước</InkButton><span aria-hidden="true">Một khoảng thời gian còn giữ lại được.</span><InkButton className="text-button" aria-label="Ảnh tiếp theo" onClick={() => setViewer((viewer+1)%4)}>Ảnh sau →</InkButton></div>
       </div>}
     </dialog>
   </div>;

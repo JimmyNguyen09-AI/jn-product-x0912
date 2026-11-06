@@ -5,7 +5,25 @@ import { chapters, motion } from "../content";
 import { InkButton } from "./motion-system";
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const nav = useRef<HTMLElement>(null);
+  useEffect(() => {
+    // The island lifts off the paper once the reader has started scrolling.
+    let raf = 0;
+    const measure = () => {
+      raf = 0;
+      setScrolled(scrollY > 24);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(measure);
+    };
+    onScroll();
+    addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
   useEffect(() => {
     const dismiss = (e: PointerEvent) => {
       if (!nav.current?.contains(e.target as Node)) setOpen(false);
@@ -16,7 +34,7 @@ export default function Navigation() {
   return (
     <nav
       ref={nav}
-      className="island"
+      className={`island${scrolled ? " scrolled" : ""}`}
       aria-label="Các chương"
       onKeyDown={(e) => {
         if (e.key === "Escape") {

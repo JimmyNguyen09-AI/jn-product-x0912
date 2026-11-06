@@ -80,16 +80,16 @@ export default function ReadingRoom({
           <div>
             <p className="chapter-label">Sau những trang mở đầu</p>
             <h2 id="reading-room-heading">
-              Vẫn còn những điều
+              Vẫn còn vài điều
               <br />
-              ở giữa các dòng chữ.
+              nằm giữa những dòng chữ.
             </h2>
           </div>
           <div className="room-invitation">
             <p>
-              Đó mới chỉ là mở đầu.
+              Nãy giờ mới là phần mở đầu.
               <br />
-              Những điều nhỏ hơn nằm ở đây.
+              Những chuyện nhỏ hơn, tôi để ở đây.
             </p>
             <Link className="ink-link" href="/stories">
               Vào góc đọc chuyện <span aria-hidden="true">↗</span>
@@ -100,18 +100,18 @@ export default function ReadingRoom({
       <div className="room-rule">
         <span>Những trang gần đây</span>
         <span>
-          {total} câu chuyện để đọc chậm lại
+          {total} câu chuyện, đọc chậm thôi
         </span>
       </div>
       {stories.length ? (
         <StoryRows stories={stories} />
       ) : (
         <p className="empty-reading">
-          Trang tiếp theo vẫn đang được viết. Hẹn bạn trở lại vào một lúc thảnh thơi.
+          Trang tiếp theo tôi vẫn đang viết. Lúc nào thảnh thơi, bạn ghé lại nhé.
         </p>
       )}
       <div className="room-colophon">
-        <p>Đọc chậm thôi. Để lại một chút khoảng trống.</p>
+        <p>Đọc chậm thôi. Chừa lại một chút chỗ trống.</p>
         <Link href="/stories">Tất cả câu chuyện →</Link>
       </div>
     </section>

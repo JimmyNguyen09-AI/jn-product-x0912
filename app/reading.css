@@ -592,7 +592,7 @@ button:disabled {
   color: var(--annotation);
 }
 .story-prose {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Noto Serif", "Times New Roman", Georgia, serif;
   font-size: calc(20px * var(--reader-scale, 1));
   line-height: 1.85;
   overflow-wrap: anywhere;
@@ -1031,7 +1031,7 @@ button:disabled {
 }
 .editor-fields textarea.body-editor {
   min-height: 440px;
-  font-family: Georgia, serif;
+  font-family: "Noto Serif", "Times New Roman", Georgia, serif;
   font-size: 18px;
   line-height: 1.8;
   padding: 20px;
@@ -1545,4 +1545,622 @@ button:disabled {
   }
   .chapter-links.open { opacity: 1; transform: none; }
   @starting-style { .chapter-links.open { opacity: 0; transform: scale(.9); } }
+}
+
+/* ---------------------------------------------------------------------------
+   Notebook polish: the reading room, library, reader and small pages should
+   feel like a hand-kept notebook. Pencil lines, paper slips, slow motion.
+   Every animation and transition is switched off under reduced motion below.
+   --------------------------------------------------------------------------- */
+.topic-alone { --topic-ink: #7b7873; }
+.topic-trust { --topic-ink: #5b7190; }
+.topic-within { --topic-ink: #8a6a4a; }
+.topic-love { --topic-ink: #a8737a; }
+.topic-family { --topic-ink: #b07a45; }
+.topic-becoming { --topic-ink: #bd8e24; }
+
+/* Story rows: faint dotted ruling, a pencil divider that trails off, topic dot. */
+.story-rows {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(48, 46, 42, 0.085) 1px,
+    transparent 1.6px
+  );
+  background-size: 26px 26px;
+  background-position: 0 14px;
+}
+.story-row {
+  border-bottom-color: transparent;
+}
+.story-row::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--line) 0,
+    var(--line) 72%,
+    rgba(200, 195, 185, 0.35) 92%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+.story-index {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: color 0.3s ease;
+}
+.story-index::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 52% 48% 55% 45% / 48% 55% 45% 52%;
+  background: var(--topic-ink, var(--ink-muted));
+  box-shadow: inset 0 0 0 1px rgba(48, 46, 42, 0.08);
+}
+.reader-title .eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 9px;
+  vertical-align: 1px;
+  border-radius: 52% 48% 55% 45% / 48% 55% 45% 52%;
+  background: var(--topic-ink, var(--ink-muted));
+}
+.story-row h3 {
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.story-row h3 a {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-bottom: 2px;
+  transition: background-size 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.3s ease;
+}
+.story-row:hover h3,
+.story-row:focus-within h3 {
+  transform: translateY(-2px);
+}
+.story-row:hover h3 a,
+.story-row:focus-within h3 a {
+  background-size: 100% 2px;
+  color: var(--annotation);
+}
+.story-row:hover .story-index,
+.story-row:focus-within .story-index {
+  color: var(--annotation);
+}
+.read-arrow {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease,
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.story-row:hover .read-arrow,
+.story-row:focus-within .read-arrow,
+.read-arrow:hover,
+.read-arrow:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  transform: translate(2px, -2px);
+}
+.story-row-cover img {
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Library intro and reading-room heading: handwritten side note, pencil stroke. */
+.library-side-note {
+  display: inline-block;
+  transform-origin: 100% 0;
+}
+.library-intro h1::after,
+.reading-room-heading h2::after,
+.missing-page h1::after {
+  content: "";
+  display: block;
+  width: 96px;
+  height: 3px;
+  margin-top: 16px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--sunflower) 0, var(--sunflower) 70%, transparent);
+  opacity: 0.75;
+  transform: rotate(-1.2deg);
+  transform-origin: 0 50%;
+}
+
+/* Topic pills: a wobbly hand-cut edge, ink fill, the active one sits askew. */
+.topic-links a {
+  position: relative;
+  border-radius: 46% 54% 48% 52% / 58% 44% 56% 42%;
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease,
+    transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.topic-links a:nth-child(even) {
+  border-radius: 52% 48% 54% 46% / 44% 58% 42% 56%;
+}
+.topic-links a:hover,
+.topic-links a:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.topic-links a[aria-current] {
+  transform: rotate(-1deg);
+}
+
+/* Search field: the pencil line bleeds thicker on focus, label lifts, arrow nudges. */
+.story-search label {
+  display: inline-block;
+  transform-origin: 0 100%;
+  transition: color 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.story-search:focus-within label {
+  color: var(--annotation);
+  transform: translateY(-3px);
+}
+.story-search > div {
+  position: relative;
+  border-bottom-color: var(--line);
+  transition: border-color 0.3s ease;
+}
+.story-search > div::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ink);
+  box-shadow: 0 1px 0 rgba(48, 46, 42, 0.18);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  pointer-events: none;
+}
+.story-search:focus-within > div {
+  border-bottom-color: var(--ink);
+}
+.story-search:focus-within > div::after {
+  transform: scaleX(1);
+}
+.story-search button {
+  transition: color 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.story-search button:hover,
+.story-search button:focus-visible {
+  color: var(--annotation);
+  transform: translate(2px, -2px);
+}
+.story-search input:focus-visible {
+  outline: none;
+}
+
+/* Reader prose: drop cap, pull quotes, pencil-underlined headings, framed pictures. */
+.story-prose > p:first-of-type::first-letter {
+  font-family: var(--heading-font);
+  font-weight: 700;
+  font-size: 3.1em;
+  line-height: 0.78;
+  float: left;
+  padding: 0.1em 0.14em 0 0;
+  color: var(--sunflower);
+}
+.story-prose blockquote {
+  position: relative;
+  border-left: 0;
+  padding: 18px 10px 18px 34px;
+  margin: 48px 0 48px 6px;
+}
+.story-prose blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: -2px;
+  top: -0.42em;
+  font-family: "Noto Serif", "Times New Roman", Georgia, serif;
+  font-size: 3.4em;
+  line-height: 1;
+  color: var(--sunflower);
+  opacity: 0.38;
+  pointer-events: none;
+}
+.story-prose blockquote::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 10px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0,
+    var(--sunflower) 9%,
+    var(--sunflower) 88%,
+    transparent 100%
+  );
+  transform: rotate(1.4deg);
+  pointer-events: none;
+}
+.story-prose h2::after {
+  content: "";
+  display: block;
+  width: 62px;
+  height: 2px;
+  margin-top: 9px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--ink) 0, var(--ink) 70%, transparent);
+  opacity: 0.55;
+  transform: rotate(-0.8deg);
+  transform-origin: 0 50%;
+}
+.story-prose .prose-figure {
+  display: block;
+  margin: 36px auto;
+  padding: 10px 10px 12px;
+  width: fit-content;
+  max-width: 100%;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 2px 3px 0 rgba(48, 46, 42, 0.08);
+  transform: rotate(-0.5deg);
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.story-prose .prose-figure img {
+  display: block;
+  margin: 0;
+}
+.story-prose .prose-figure:hover {
+  transform: rotate(0deg);
+}
+
+/* Contents list: a pencil tick draws in beside the hovered section. */
+.reader-contents a {
+  position: relative;
+  padding-left: 18px;
+  transition: color 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reader-contents a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.66em;
+  width: 11px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--annotation);
+  transform: scaleX(0) rotate(-8deg);
+  transform-origin: 0 50%;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reader-contents a:hover,
+.reader-contents a:focus-visible {
+  transform: translateX(2px);
+}
+.reader-contents a:hover::before,
+.reader-contents a:focus-visible::before {
+  transform: scaleX(1) rotate(-8deg);
+}
+
+/* Progress bar carries a sharpened pencil tip at its leading edge. */
+.reader-progress {
+  overflow: hidden;
+  background: linear-gradient(90deg, rgba(189, 142, 36, 0.85), var(--sunflower));
+}
+.reader-progress::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-left: 8px solid #7d5c12;
+  border-top: 1.5px solid transparent;
+  border-bottom: 1.5px solid transparent;
+}
+
+/* Reading tools: a pressed-ink feel. */
+.reader-tool {
+  border-radius: 3px;
+  transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.reader-tool:active:not(:disabled) {
+  transform: translateY(1px);
+  background: #e7e4da;
+  box-shadow: inset 0 1px 0 rgba(48, 46, 42, 0.16);
+}
+.reader-tool[aria-pressed="true"] {
+  text-decoration-color: var(--sunflower);
+  text-decoration-thickness: 2px;
+}
+
+/* Resume prompt: a small paper card. */
+.resume-reading {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 2px 3px 2px 4px;
+  background: #f6f3ea;
+  box-shadow: 2px 3px 0 rgba(48, 46, 42, 0.08);
+}
+.resume-reading > button:last-child {
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  line-height: 1;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+.resume-reading > button:last-child:hover {
+  background: #e7e4da;
+  transform: rotate(90deg);
+}
+
+/* The closing mark. */
+.reader-end > span {
+  display: inline-block;
+}
+
+/* Related reading: torn paper slips. */
+.next-pages a {
+  position: relative;
+  padding: 26px 24px 28px;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  background: #f6f3ea;
+  border-radius: 2px 3px 0 0;
+  filter: drop-shadow(2px 3px 0 rgba(48, 46, 42, 0.08));
+  transform: rotate(-0.5deg);
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), filter 0.4s ease;
+}
+.next-pages a:nth-child(even) {
+  transform: rotate(0.6deg);
+}
+.next-pages a::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  bottom: -7px;
+  height: 7px;
+  background-image: linear-gradient(135deg, #f6f3ea 50%, transparent 50%),
+    linear-gradient(225deg, #f6f3ea 50%, transparent 50%);
+  background-size: 14px 14px;
+  background-position: 0 -7px;
+  background-repeat: repeat-x;
+  pointer-events: none;
+}
+.next-pages a > span:last-child {
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.3s ease;
+}
+.next-pages a:hover,
+.next-pages a:focus-visible {
+  transform: translateY(-4px) rotate(0deg);
+  filter: drop-shadow(3px 6px 0 rgba(48, 46, 42, 0.12));
+}
+.next-pages a:hover > span:last-child,
+.next-pages a:focus-visible > span:last-child {
+  transform: translate(3px, -3px);
+  color: var(--annotation);
+}
+
+/* Header navigation: pencil underline draws in. Footer signature wiggles. */
+.journal-header nav a {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  padding-bottom: 3px;
+  transition: background-size 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.3s ease;
+}
+.journal-header nav a:hover,
+.journal-header nav a:focus-visible {
+  text-decoration: none;
+  background-size: 100% 1px;
+  color: var(--annotation);
+}
+.footer-signature {
+  display: inline-block;
+  transform-origin: 50% 80%;
+}
+
+/* Empty states and missing pages: a note left on the desk. */
+.empty-reading {
+  position: relative;
+  padding: 40px 34px 44px;
+  margin: 35px 0 20px;
+  border: 1px dashed var(--line);
+  border-radius: 3px 4px 3px 5px;
+  background: #fbfaf5;
+  transform: rotate(-0.4deg);
+}
+.empty-reading::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 28px;
+  width: 54px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--sunflower);
+  opacity: 0.8;
+  transform: rotate(-1.5deg);
+}
+.missing-page .chapter-label {
+  color: var(--annotation);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .story-row:hover .story-row-cover img {
+    transform: rotate(-1deg) scale(1.02);
+  }
+}
+
+@media (max-width: 600px) {
+  .story-rows {
+    background-size: 22px 22px;
+  }
+  .story-index {
+    gap: 7px;
+  }
+  .story-index::before,
+  .reader-title .eyebrow::before {
+    width: 6px;
+    height: 6px;
+  }
+  .library-intro h1::after,
+  .reading-room-heading h2::after,
+  .missing-page h1::after {
+    width: 72px;
+    margin-top: 12px;
+  }
+  .story-prose > p:first-of-type::first-letter {
+    font-size: 2.7em;
+  }
+  .story-prose blockquote {
+    padding: 14px 6px 14px 28px;
+    margin: 36px 0 36px 4px;
+  }
+  .story-prose blockquote::before {
+    font-size: 3em;
+  }
+  .story-prose .prose-figure {
+    margin: 28px auto;
+    padding: 7px 7px 9px;
+  }
+  .reader-contents a {
+    padding-left: 16px;
+  }
+  .next-pages a {
+    padding: 20px 18px 24px;
+    margin-bottom: 26px;
+  }
+  .empty-reading {
+    padding: 28px 22px 32px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes notebook-page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes side-note-sway {
+    0%,
+    100% {
+      transform: rotate(-6deg) translateY(0);
+    }
+    50% {
+      transform: rotate(-2.5deg) translateY(2px);
+    }
+  }
+  @keyframes resume-slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px) rotate(-0.6deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes closing-mark-turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes signature-wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-6deg) translateY(-1px);
+    }
+    55% {
+      transform: rotate(5deg);
+    }
+    80% {
+      transform: rotate(-2deg);
+    }
+  }
+  .library-page > *,
+  .reader-page > :not(.reader-progress),
+  .missing-page > * {
+    animation: notebook-page-enter 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .library-page > :nth-child(2),
+  .reader-page > :nth-child(2),
+  .missing-page > :nth-child(2) {
+    animation-delay: 90ms;
+  }
+  .library-page > :nth-child(3),
+  .reader-page > :nth-child(3),
+  .missing-page > :nth-child(3) {
+    animation-delay: 180ms;
+  }
+  .library-page > :nth-child(4),
+  .reader-page > :nth-child(4),
+  .missing-page > :nth-child(4) {
+    animation-delay: 270ms;
+  }
+  .library-page > :nth-child(5),
+  .reader-page > :nth-child(5),
+  .missing-page > :nth-child(5) {
+    animation-delay: 360ms;
+  }
+  .library-page > :nth-child(n + 6),
+  .reader-page > :nth-child(n + 6),
+  .missing-page > :nth-child(n + 6) {
+    animation-delay: 440ms;
+  }
+  .reader-page > .resume-reading {
+    animation: resume-slide-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .library-side-note {
+    animation: side-note-sway 6s ease-in-out infinite;
+  }
+  .reader-end > span {
+    animation: closing-mark-turn 28s linear infinite;
+  }
+  .footer-signature:hover,
+  .footer-signature:focus-visible {
+    animation: signature-wiggle 0.7s ease-in-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .library-side-note,
+  .reader-end > span,
+  .footer-signature,
+  .resume-reading,
+  .library-page > *,
+  .reader-page > *,
+  .missing-page > * {
+    animation: none;
+    opacity: 1;
+  }
+  .story-row:hover h3,
+  .story-row:focus-within h3,
+  .read-arrow,
+  .story-row:hover .story-row-cover img,
+  .story-search button,
+  .reader-contents a,
+  .next-pages a,
+  .next-pages a:hover,
+  .next-pages a > span:last-child {
+    transform: none;
+  }
 }

@@ -10,6 +10,10 @@ import {
 
 import {openingNotes} from './opening-notes';
 export async function ensureOpening() {
+  await seedOpening();
+  await refreshOpening();
+}
+async function seedOpening() {
   const database = db();
   if (await database.prepare("SELECT name FROM migrations WHERE name=?").get("opening-v1")) return;
   await database.transaction(async tx => {
@@ -18,6 +22,19 @@ export async function ensureOpening() {
     const now = new Date().toISOString();
     for (const note of openingNotes) await tx.prepare(`INSERT INTO stories(id,slug,title,excerpt,body,topic,status,createdAt,updatedAt,publishedAt,opening) VALUES(?,?,?,?,?,?,'published',?,?,?,1) ON CONFLICT(slug) DO NOTHING`).run(randomUUID(),note.slug,note.title,note.excerpt,note.body,note.topic,now,now,now);
     await tx.prepare("INSERT INTO migrations(name) VALUES(?)").run("opening-v1");
+  });
+}
+// Opening pages were rewritten in a warmer voice. Refresh only copies the author
+// never touched through the writing desk (version is still 1); edited pages stay.
+async function refreshOpening() {
+  const database = db();
+  if (await database.prepare("SELECT name FROM migrations WHERE name=?").get("opening-v2")) return;
+  await database.transaction(async tx => {
+    await tx.prepare("SELECT pg_advisory_xact_lock(hashtext(?))").get("jn-opening-v2");
+    if (await tx.prepare("SELECT name FROM migrations WHERE name=?").get("opening-v2")) return;
+    const now = new Date().toISOString();
+    for (const note of openingNotes) await tx.prepare(`UPDATE stories SET title=?,excerpt=?,body=?,updatedAt=? WHERE slug=? AND opening=1 AND version=1`).run(note.title,note.excerpt,note.body,now,note.slug);
+    await tx.prepare("INSERT INTO migrations(name) VALUES(?)").run("opening-v2");
   });
 }
 export async function listPublished({

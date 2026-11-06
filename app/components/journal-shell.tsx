@@ -30,7 +30,7 @@ export function JournalFooter() {
       <Link href="/" className="footer-signature">
         JN.
       </Link>
-      <span>Vài trang viết. Một kết thúc còn mở.</span>
+      <span>Vài trang viết. Đoạn kết vẫn để mở.</span>
       <Link href="/admin">Bàn viết ↗</Link>
     </footer>
   );

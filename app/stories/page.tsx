@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Góc đọc chuyện — JN",
   description:
-    "Những trang viết về niềm tin, suy tư và quá trình lớn lên. Một câu chuyện riêng, từng trang một.",
+    "Những trang tôi viết về niềm tin, về những đêm nghĩ nhiều và về việc lớn lên. Một câu chuyện riêng, từng trang một.",
 };
 export default async function StoriesPage({
   searchParams,
@@ -30,14 +30,14 @@ export default async function StoriesPage({
           <header className="library-intro">
             <p className="chapter-label">Góc đọc chuyện / JN</p>
             <h1>
-              Một chỗ dành cho
+              Một chỗ cho
               <br />
               những câu chuyện nhỏ.
             </h1>
             <p>
-              Có những khoảnh khắc cần hơn một khung hình.
+              Có những khoảnh khắc một khung hình không chứa hết.
               <br />
-              Ở đây, chúng có thêm một chút chỗ.
+              Ở đây, tôi cho chúng thêm chút chỗ.
             </p>
             <span className="library-side-note" aria-hidden="true">
               cứ thong thả nhé ↓
@@ -53,12 +53,12 @@ export default async function StoriesPage({
                 name="q"
                 type="search"
                 defaultValue={q}
-                placeholder="Một từ, một cảm giác, một nhan đề…"
+                placeholder="Một chữ, một cảm giác, một cái tên…"
                 maxLength={120}
               />
               <input name="topic" type="hidden" value={topic} />
               <button type="submit" aria-label="Tìm câu chuyện">
-                Tìm kiếm ↗
+                Tìm ↗
               </button>
             </div>
           </form>
@@ -98,8 +98,8 @@ export default async function StoriesPage({
           <StoryRows stories={result.stories} />
         ) : (
           <div className="empty-reading">
-            <h3>{!q && topics.includes(topic as (typeof topics)[number]) ? "Chương này đang chờ những trang viết mới." : "Chưa có trang viết phù hợp."}</h3>
-            <p>{!q && topics.includes(topic as (typeof topics)[number]) ? "Những câu chuyện sẽ xuất hiện ở đây khi được đăng. Trong lúc chờ, bạn có thể đọc các chương khác." : "Thử một từ khác, hoặc xem lại tất cả câu chuyện."}</p>
+            <h3>{!q && topics.includes(topic as (typeof topics)[number]) ? "Chương này còn đang chờ trang viết mới." : "Chưa có trang viết phù hợp."}</h3>
+            <p>{!q && topics.includes(topic as (typeof topics)[number]) ? "Khi nào viết xong, tôi sẽ đăng ở đây. Trong lúc chờ, bạn đọc sang chương khác cũng được." : "Bạn thử một chữ khác, hoặc xem lại tất cả xem sao."}</p>
             <Link className="ink-link" href="/stories">
               Xem tất cả câu chuyện →
             </Link>
@@ -125,9 +125,9 @@ export default async function StoriesPage({
         <aside className="library-note">
           <span aria-hidden="true">✳</span>
           <p>
-            Không cần đọc theo thứ tự.
+            Không cần đọc theo thứ tự đâu.
             <br />
-            Bắt đầu từ trang khiến bạn thấy gần gũi nhất.
+            Cứ bắt đầu từ trang nào bạn thấy gần mình nhất.
           </p>
         </aside>
       </main>

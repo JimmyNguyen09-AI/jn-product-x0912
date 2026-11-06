@@ -1,0 +1,253 @@
+/* Section transitions: pencil dividers, page turns, paper folds.
+ * Everything here is decorative. Layers never catch pointer events and stay
+ * below the fixed cloud transition (z-index 12). Only opacity, transform and
+ * SVG dash values move; no layout changes per frame. */
+.ink-divider,
+.chapter-turn,
+.paper-fold {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  margin: 0 auto;
+  --graphite: #a8a299;
+  --graphite-light: #c8c3b9;
+  --stroke-color: var(--graphite);
+  --echo-color: var(--graphite-light);
+}
+.ink-tone-blue {
+  --stroke-color: #6d82a0;
+  --echo-color: #a9b6c8;
+}
+.ink-tone-sunflower {
+  --stroke-color: #b59754;
+  --echo-color: #d9c795;
+}
+
+/* Hand-drawn strokes. Stroke width is tuned per breakpoint so the
+ * scaled viewBox stays between roughly 0.8 and 1.4 CSS pixels. */
+.ink-stroke {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: var(--stroke-color);
+  stroke-width: 0.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ink-stroke .ink-echo {
+  stroke: var(--echo-color);
+  stroke-width: 0.55;
+  opacity: 0.85;
+}
+.ink-stroke-stitch {
+  stroke-width: 1.2;
+}
+.ink-stroke-loop {
+  stroke-width: 1;
+}
+
+/* --- Ink divider: a quiet band between two sections --- */
+.ink-divider {
+  max-width: 1160px;
+  padding: 26px 6% 18px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 18px 28px;
+}
+.ink-divider-stitch,
+.ink-divider-loop {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+.ink-divider-stitch .ink-stroke {
+  width: min(220px, 50%);
+}
+.ink-divider-loop .ink-stroke {
+  width: min(300px, 62%);
+}
+.ink-divider-wave .ink-stroke,
+.ink-divider-underline .ink-stroke {
+  max-width: 920px;
+}
+
+/* --- Page marker: "— trang 02 —" in handwriting, slightly askew --- */
+.page-marker {
+  display: inline-block;
+  font-family: var(--reading-font);
+  font-size: 16px;
+  letter-spacing: 0.1em;
+  color: var(--graphite);
+  white-space: nowrap;
+  transform: rotate(-2deg);
+  will-change: opacity, transform;
+}
+
+/* --- Chapter turn: scene hands off to its afterword --- */
+.chapter-turn {
+  isolation: isolate;
+  max-width: none;
+  padding: 0;
+  overflow-x: clip;
+}
+.turn-vignette {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 150px;
+  z-index: -1;
+  opacity: 0;
+  background: linear-gradient(var(--turn-from, var(--paper)), var(--paper));
+}
+.clouds-enabled .turn-vignette {
+  opacity: 1;
+}
+.turn-smudge {
+  position: absolute;
+  left: 50%;
+  top: -40px;
+  width: min(1200px, 100%);
+  height: 220px;
+  translate: -50% 0;
+  z-index: -1;
+  background:
+    radial-gradient(60% 90% at 32% 20%, #a8a29914, transparent 70%),
+    radial-gradient(40% 70% at 70% 60%, #a8a2990c, transparent 72%);
+  will-change: opacity;
+}
+.turn-row {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 72px 6% 10px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 10px 26px;
+}
+.turn-mark-drift {
+  display: inline-block;
+  line-height: 0;
+}
+.turn-mark {
+  display: block;
+  width: 40px;
+  height: 40px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--echo-color);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  will-change: opacity, transform;
+}
+.turn-line {
+  align-self: center;
+  padding-bottom: 6px;
+}
+
+/* --- Paper fold: a crease across the page --- */
+.paper-fold {
+  max-width: 1160px;
+  padding: 36px 6% 14px;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+.fold-crease {
+  display: block;
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0,
+    #a8a29912 42%,
+    #a8a29926 50%,
+    #ffffff 54%,
+    #fdfdfc 58%,
+    transparent 100%
+  );
+  transform-origin: 50% 50%;
+  will-change: opacity, transform;
+}
+
+@media (max-width: 600px) {
+  .ink-stroke {
+    stroke-width: 1.4;
+  }
+  .ink-stroke .ink-echo {
+    stroke-width: 1;
+  }
+  .ink-stroke-stitch {
+    stroke-width: 1.6;
+  }
+  .ink-divider {
+    padding: 20px 7% 12px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 12px;
+  }
+  .ink-divider-wave .ink-stroke,
+  .ink-divider-underline .ink-stroke {
+    width: 100%;
+  }
+  .ink-divider-stitch .ink-stroke {
+    width: 58%;
+  }
+  .ink-divider-loop .ink-stroke {
+    width: 72%;
+  }
+  .page-marker {
+    font-size: 14px;
+  }
+  .turn-row {
+    padding: 48px 7% 6px;
+    grid-template-columns: auto 1fr;
+    gap: 6px 18px;
+  }
+  .turn-row .page-marker {
+    grid-column: 1 / -1;
+    justify-self: end;
+  }
+  .turn-mark {
+    width: 30px;
+    height: 30px;
+    stroke-width: 1.4;
+  }
+  .turn-vignette {
+    height: 110px;
+  }
+  .paper-fold {
+    padding: 26px 7% 10px;
+  }
+}
+
+/* Reduced motion: everything static and fully visible. The components also
+ * skip attaching motion values, this is the belt to that suspenders. */
+@media (prefers-reduced-motion: reduce) {
+  .ink-stroke path {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .page-marker,
+  .turn-mark,
+  .turn-smudge,
+  .fold-crease,
+  .drift {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .page-marker {
+    transform: rotate(-2deg) !important;
+  }
+  .page-marker,
+  .turn-mark,
+  .turn-smudge,
+  .fold-crease {
+    will-change: auto;
+  }
+}

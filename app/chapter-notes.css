@@ -6,12 +6,39 @@
 .chapter-note-body details{border-block:1px solid var(--line);font-size:20px;line-height:1.65}
 .chapter-note-body summary{padding:18px 0;cursor:pointer;display:flex;gap:20px;align-items:center;justify-content:space-between;list-style:none}
 .chapter-note-body summary::-webkit-details-marker{display:none}
+.chapter-note-body summary span{display:inline-block;flex:none;transition:transform .35s cubic-bezier(.215,.61,.355,1),color .2s;color:var(--ink-muted)}
+.chapter-note-body summary:hover span{color:var(--annotation)}
 .chapter-note-body details[open] summary span{transform:rotate(45deg)}
+/* The answer fades in beneath the question; content stays in the tree. */
+.chapter-note-body details::details-content{opacity:0;transform:translateY(-4px);transition:opacity .3s cubic-bezier(.23,1,.32,1),transform .3s cubic-bezier(.23,1,.32,1),content-visibility .3s allow-discrete}
+.chapter-note-body details[open]::details-content{opacity:1;transform:none}
 .chapter-note-body details p{color:var(--ink-muted);margin:0 0 22px}
 .chapter-read-link{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:24px;padding:14px 0;color:var(--annotation);font-size:25px;text-decoration:none}
 .chapter-read-link small{display:block;font-size:17px;color:var(--ink-muted);margin-bottom:6px}
 .chapter-read-link>span:last-child{font-size:32px}
-.chapter-read-link:hover{text-decoration:underline;text-underline-offset:6px}
-.chapter-library-link{display:inline-block;font-size:18px;color:var(--ink-muted);padding:10px 0}
+/* Hand-drawn underline under the title; the arrow nudges toward the page. */
+.chapter-read-link>span:first-child{position:relative}
+.chapter-read-link>span:first-child::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;transform:scaleX(0) rotate(-.5deg);transform-origin:left center;transition:transform .4s cubic-bezier(.23,1,.32,1)}
+.chapter-read-link:hover>span:first-child::after,.chapter-read-link:focus-visible>span:first-child::after{transform:scaleX(1) rotate(-.5deg)}
+.chapter-read-link>span:last-child{transition:translate .25s cubic-bezier(.23,1,.32,1),color .2s}
+.chapter-read-link:hover>span:last-child{translate:2px -2px}
+.chapter-library-link{display:inline-block;font-size:18px;color:var(--ink-muted);padding:10px 0;position:relative;transition:color .2s}
+.chapter-library-link::after{content:"";position:absolute;left:0;right:0;bottom:7px;height:1px;background:currentColor;transform:scaleX(0) rotate(-.5deg);transform-origin:left center;transition:transform .4s cubic-bezier(.23,1,.32,1)}
+.chapter-library-link:hover,.chapter-library-link:focus-visible{color:var(--ink)}
+.chapter-library-link:hover::after,.chapter-library-link:focus-visible::after{transform:scaleX(1) rotate(-.5deg)}
 .chapter-notes-becoming .chapter-label{color:#866414}
 @media(max-width:700px){.chapter-notes{grid-template-columns:1fr;padding:64px 7%;gap:22px}.chapter-note-heading h2{max-width:22ch;margin:18px 0}.chapter-note-body>p{font-size:21px}.chapter-keywords{font-size:17px}.chapter-read-link{font-size:23px}}
+
+/* ---------- Chapter numeral watermark ---------- */
+/* A faint graphite numeral behind each afterword; the alternative text is
+ * empty so assistive technology never announces it. */
+.chapter-notes::before{position:absolute;top:54px;left:4%;z-index:-1;font-family:var(--heading-font);font-size:clamp(130px,17vw,230px);line-height:1;font-weight:700;letter-spacing:-.04em;color:var(--ink);opacity:.045;pointer-events:none;user-select:none}
+.chapter-notes-alone::before{content:"01" / ""}
+.chapter-notes-trust::before{content:"02" / ""}
+.chapter-notes-within::before{content:"03" / ""}
+.chapter-notes-love::before{content:"04" / ""}
+.chapter-notes-family::before{content:"05" / ""}
+.chapter-notes-becoming::before{content:"06" / ""}
+.chapter-notes-becoming::before{color:var(--sunflower);opacity:.07}
+@media(max-width:700px){.chapter-notes::before{top:30px;left:5%;font-size:120px}}
+@media(prefers-reduced-motion:reduce){.chapter-note-body details::details-content{opacity:1;transform:none;transition:none}}

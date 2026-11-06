@@ -1,24 +1,24 @@
 export const storyCopy = {
   annotation: "Một câu chuyện, vẫn đang viết.",
   pairs: [
-    ["Tôi vẫn thường bước đi", "một mình như thế."],
-    ["Không phải vì tôi chưa từng", "muốn có ai ở bên."],
-    ["Tôi chỉ vẫn tìm kiếm", "một bàn tay để tin tưởng."],
+    ["Tôi vẫn hay đi", "một mình như thế."],
+    ["Không phải vì tôi chưa từng", "muốn có ai bên cạnh."],
+    ["Chỉ là tôi vẫn đang tìm", "một bàn tay để tin."],
   ],
   trust: [
-    "Vậy nên, tôi đã đưa tay ra.",
-    "Tôi đã nghĩ niềm tin sẽ được đáp lại.",
-    "Có những bàn tay đã dạy tôi điều khác.",
+    "Thế nên tôi đưa tay ra.",
+    "Tôi cứ tin là mình sẽ được nắm lại.",
+    "Có những bàn tay dạy tôi điều ngược lại.",
   ],
   bloom: [
-    "Đã có lúc, tôi nghĩ mình không thể lớn thêm nữa.",
-    "Có những đổi thay diễn ra ở nơi chẳng ai nhìn thấy.",
-    "Rồi từng chút một, tôi tìm về phía ánh sáng.",
+    "Có dạo tôi nghĩ mình chẳng lớn thêm được nữa.",
+    "Hoá ra có những thứ đổi thay ở chỗ không ai nhìn.",
+    "Rồi từng chút, tôi quay về phía ánh sáng.",
   ],
   noise: {
-    annotation: "Yên lặng không phải lúc nào cũng bình yên.",
-    heading: "Rồi những ồn ào\nchuyển vào bên trong.",
-    body: "Tôi nghĩ lại từng khoảnh khắc.\nTừng lời nói.\nNhững điều đáng lẽ mình nên nói.\n\nĐến khi cả yên lặng cũng trở nên chật chội.",
+    annotation: "Yên lặng không hẳn là bình yên.",
+    heading: "Rồi tiếng ồn\nchuyển hết vào trong.",
+    body: "Tôi tua lại từng khoảnh khắc.\nTừng câu đã nói.\nNhững câu lẽ ra nên nói mà thôi.\n\nĐến lúc cả yên lặng cũng thấy chật.",
   },
   love: [
     "For a while, alone became together.",
@@ -74,14 +74,14 @@ export const media = {
     poster: "/media/love.webp",
     position: "50% 50%",
     mobilePosition: "50% 50%",
-    description: "Hai người ngồi cạnh nhau trên mây. Người bên cạnh dần nhạt đi, để lại nhân vật nam và một chỗ ngồi trống.",
+    description: "Hai người ngồi cạnh nhau trên mây. Người bên cạnh mờ dần, chỉ còn lại chàng trai và một chỗ ngồi trống.",
   },
   walk: {
     src: "/media/walk.mp4",
     poster: "/media/walk.webp",
     position: "50% 50%",
     mobilePosition: "50% 50%",
-    description: "Một người bước đi trên những đám mây, được vẽ bằng nét chì.",
+    description: "Một người đang đi trên mây, vẽ bằng nét chì.",
   },
   trust: {
     src: "/media/trust.mp4",
@@ -89,7 +89,7 @@ export const media = {
     position: "50% 50%",
     mobilePosition: "50% 50%",
     description:
-      "Hai bàn tay tiến lại gần nhau; lời mời kết nối trở thành một cử chỉ gây tổn thương.",
+      "Hai bàn tay đưa về phía nhau; lời mời nắm lấy rồi trở thành một cử chỉ làm đau.",
   },
   noise: {
     src: "/media/noise.mp4",
@@ -97,7 +97,7 @@ export const media = {
     position: "50% 50%",
     mobilePosition: "50% 50%",
     description:
-      "Một người nằm cuộn mình giữa những nét chì rối và biểu tượng suy tư.",
+      "Một người nằm co lại giữa những nét chì rối và mấy dấu suy nghĩ lộn xộn.",
   },
   bloom: {
     src: "/media/bloom.mp4",
@@ -105,6 +105,6 @@ export const media = {
     position: "50% 50%",
     mobilePosition: "50% 50%",
     description:
-      "Bông hướng dương khô héo, đen trắng dần nở vàng với những chiếc lá xanh.",
+      "Bông hướng dương héo, đen trắng, dần nở vàng và mọc ra những chiếc lá xanh.",
   },
 };

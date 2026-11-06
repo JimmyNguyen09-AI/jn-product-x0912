@@ -75,17 +75,17 @@ export default function ReaderTools({
       const next = saved ? entries.filter((v) => v !== id) : [...entries, id];
       localStorage.setItem("jn-saved-pages", JSON.stringify(next));
       setSaved(!saved);
-      setStatus(saved ? "Đã bỏ dấu trang." : "Đã lưu dấu trang trên thiết bị này.");
+      setStatus(saved ? "Đã bỏ dấu trang rồi." : "Đã kẹp dấu trang, lưu trên máy này.");
     } catch {
-      setStatus("Trình duyệt này không lưu được dấu trang.");
+      setStatus("Trình duyệt này không cho lưu dấu trang.");
     }
   }
   async function copy() {
     try {
       await navigator.clipboard.writeText(location.href);
-      setStatus("Đã sao chép đường dẫn.");
+      setStatus("Đã chép đường dẫn rồi.");
     } catch {
-      setStatus("Bạn có thể sao chép địa chỉ trên trình duyệt để chia sẻ trang này.");
+      setStatus("Bạn chép địa chỉ trên thanh trình duyệt để gửi trang này nhé.");
     }
   }
   return (
@@ -128,7 +128,7 @@ export default function ReaderTools({
       </p>
       {resume !== null && (
         <div className="resume-reading">
-          <span>Bạn đã trở lại với “{title}”.</span>
+          <span>Bạn quay lại với “{title}” rồi.</span>
           <InkButton
             className="text-button"
             onClick={() => {
@@ -144,7 +144,7 @@ export default function ReaderTools({
               setResume(null);
             }}
           >
-            Đọc tiếp từ chỗ đã dừng →
+            Đọc tiếp từ chỗ hôm trước →
           </InkButton>
           <button
             aria-label="Đóng nhắc đọc tiếp"

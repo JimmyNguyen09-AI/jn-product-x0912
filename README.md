@@ -46,6 +46,10 @@ Place the service behind an HTTPS reverse proxy. Sessions are opaque, hashed in 
 
 Dockerfile and compose.yaml provide a non-root standalone Node service with a private backup volume and Neon connection and loopback-only port binding. They have not been executed: the Docker Linux daemon is unavailable in this environment. When using Docker, initialize the account with `docker compose exec journal node scripts/admin-setup.mjs`. Configure TLS/proxy and SITE_URL before use. No container, remote service or domain has been deployed.
 
+## Copy refresh
+
+The opening pages in lib/opening-notes.ts were rewritten in a warmer, more spoken voice. On first run the `opening-v2` migration copies the new title, excerpt and body into existing databases, but only for opening stories whose `version` is still 1 (never edited through the writing desk). Edited pages are left untouched.
+
 ## Backup and restore
 
 ```sh
@@ -73,7 +77,8 @@ Checks cover 390, 768 and 1440px; scroll seeking forward/backward/rapid/idle; na
 | Story, scene copy and media | app/story.tsx, app/content.ts, app/use-story-motion.ts |
 | Reading and administration | app/stories/, app/admin/, app/api/admin/ |
 | Storage, authentication and validation | lib/ |
-| Motion primitives | app/components/motion-system.tsx |
+| Motion primitives | app/components/motion-system.tsx (Reveal with delay/y/blur/stagger, RevealText, Lines) |
+| Section transitions | app/components/section-transition.tsx (InkDivider, ChapterTurn, PaperFold, Drift), app/transitions.css |
 | Visual styles | app/globals.css, app/theme.css, app/journey.css, app/reading.css |
 | Assets and encoding | ASSETS.md, MEDIA.md |
 

@@ -46,12 +46,17 @@ export default function StoryMarkdown({ body }: { body: string }) {
               {children}
             </a>
           ),
+          blockquote: ({ children }) => (
+            <blockquote className="pull-quote">{children}</blockquote>
+          ),
           img: ({ src, alt }) =>
             typeof src === "string" &&
             /^\/media\/(uploads\/[a-f0-9-]{36}\.webp|[a-z-]+\.webp)$/.test(
               src,
             ) ? (
-              <img src={src} alt={alt || ""} loading="lazy" />
+              <span className="prose-figure">
+                <img src={src} alt={alt || ""} loading="lazy" />
+              </span>
             ) : (
               <span className="image-unavailable">[Không tải được hình ảnh]</span>
             ),
