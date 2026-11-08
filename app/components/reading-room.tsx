@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element -- Local SVG/WebP assets are already optimized; protected uploads must retain direct origin authentication and revocation. */
 import Link from "next/link";
 import { Reveal } from "./motion-system";
-import { type StorySummary, topicNames } from "@/lib/types";
+import { type StorySummary, topics, topicNames } from "@/lib/types";
 export function StoryRows({ stories }: { stories: StorySummary[] }) {
   return (
     <div className="story-rows">
@@ -110,6 +110,14 @@ export default function ReadingRoom({
           Trang tiếp theo tôi vẫn đang viết. Lúc nào thảnh thơi, bạn ghé lại nhé.
         </p>
       )}
+      <div className="room-topic-strip" aria-label="Đọc theo chương">
+        {topics.map((t) => (
+          <Link key={t} href={`/stories?topic=${t}`} className={`room-topic-pill topic-${t}`}>
+            <span className="room-topic-dot" aria-hidden="true" />
+            {topicNames[t]}
+          </Link>
+        ))}
+      </div>
       <div className="room-colophon">
         <p>Đọc chậm thôi. Chừa lại một chút chỗ trống.</p>
         <Link href="/stories">Tất cả câu chuyện →</Link>

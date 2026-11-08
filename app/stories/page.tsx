@@ -4,6 +4,7 @@ import { listPublished } from "@/lib/journal";
 import { topics, topicNames } from "@/lib/types";
 import { JournalHeader, JournalFooter } from "../components/journal-shell";
 import { StoryRows } from "../components/reading-room";
+import { LibraryCompanion } from "../components/reader-tools";
 import { Reveal } from "../components/motion-system";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -76,6 +77,7 @@ export default async function StoriesPage({
             {topics.map((t) => (
               <Link
                 key={t}
+                className={`topic-filter-pill topic-${t}`}
                 href={`/stories?${new URLSearchParams({ q, topic: t })}`}
                 aria-current={topic === t ? "page" : undefined}
               >
@@ -83,6 +85,7 @@ export default async function StoriesPage({
               </Link>
             ))}
           </nav>
+          <LibraryCompanion stories={result.stories} />
         </section>
         <div className="room-rule">
           <h2>

@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useMotionTokens } from "@animate-ui/react/utils/motion";
 import { InkButton } from "../components/motion-system";
 import StoryMarkdown from "../components/story-markdown";
-import { topics, topicNames, statusNames, type StoryEntry } from "@/lib/types";
+import { topics, topicNames, statusNames, readingMinutes, type StoryEntry } from "@/lib/types";
 type Draft = {
   id?: string;
   title: string;
@@ -378,6 +378,9 @@ export default function WritingDesk({
                 {preview
                   ? "Bản xem trước khi đọc"
                   : "Câu chuyện · hỗ trợ Markdown"}
+                {draft.body.trim()
+                  ? ` · ${draft.body.trim().split(/\s+/).length} chữ (~${readingMinutes(draft.body)} phút đọc)`
+                  : ""}
               </span>
               <div>
                 <label className="file-link">

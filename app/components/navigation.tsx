@@ -1,8 +1,20 @@
 /* eslint-disable @next/next/no-img-element -- Local SVG/WebP assets are already optimized; protected uploads must retain direct origin authentication and revocation. */
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { chapters, motion } from "../content";
 import { InkButton } from "./motion-system";
+
+const chapterSubtitles: Record<string, string> = {
+  beginning: "Những bước chân",
+  trust: "Một bàn tay",
+  noise: "Những nghĩ suy",
+  "almost-us": "Tình yêu dang dở",
+  family: "Gia đình",
+  becoming: "Về phía ánh sáng",
+  stories: "Những trang viết",
+};
+
 export default function Navigation() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -56,7 +68,7 @@ export default function Navigation() {
         className="menu-toggle"
         aria-controls="chapter-links"
         aria-expanded={open}
-        onClick={() => setOpen(!open)}
+        onClick={() => flushSync(() => setOpen((v) => !v))}
       >
         Các chương <span aria-hidden="true">{open ? "−" : "+"}</span>
       </InkButton>
@@ -65,6 +77,7 @@ export default function Navigation() {
           <a
             key={id}
             href={`#${id}`}
+            data-subtitle={chapterSubtitles[id]}
             onClick={(e) => {
               setOpen(false);
               const target = document.getElementById(id)!;

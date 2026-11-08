@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { storyCopy } from "./content";
 import { useStoryMotion } from "./use-story-motion";
 import Navigation from "./components/navigation";
@@ -22,6 +22,22 @@ import {
   PaperFold,
 } from "./components/section-transition";
 import "./transitions.css";
+
+const noiseReflections = [
+  {
+    label: "Câu chưa kịp nói",
+    note: "Có những lời giữ lại không phải vì hết thương, mà vì lúc đó chưa đủ bình tĩnh để nói cho dịu dàng.",
+  },
+  {
+    label: "Khoảnh khắc tua lại",
+    note: "Đi vòng quanh một ký ức không làm quá khứ đổi hướng, nhưng giúp mình hiểu vì sao hôm đó mình đau.",
+  },
+  {
+    label: "Chỗ cho im lặng thở",
+    note: "Viết xuống trang giấy này là cách tôi mở cửa sổ cho căn phòng trong đầu bớt ngột ngạt.",
+  },
+] as const;
+
 export default function Story({
   stories,
   total,
@@ -32,6 +48,7 @@ export default function Story({
   year: number;
 }) {
   const root = useRef<HTMLDivElement>(null);
+  const [thoughtIndex, setThoughtIndex] = useState(0);
   useStoryMotion(root);
   return (
     <div ref={root} className="sketchbook">
@@ -48,6 +65,11 @@ export default function Story({
           aria-labelledby="story-title"
         >
           <div className="scene-inner">
+            <div className="hero-halo" aria-hidden="true" />
+            <span className="sketch-corner sketch-corner-tl" aria-hidden="true" />
+            <span className="sketch-corner sketch-corner-tr" aria-hidden="true" />
+            <span className="sketch-corner sketch-corner-bl" aria-hidden="true" />
+            <span className="sketch-corner sketch-corner-br" aria-hidden="true" />
             <h1 id="story-title" className="annotation hero-note">
               {storyCopy.annotation}
             </h1>
@@ -102,11 +124,31 @@ export default function Story({
             <Media name="noise" />
           </div>
           <Reveal className="noise-copy">
+            <span className="diary-tape" aria-hidden="true" />
             <p className="annotation">Yên lặng không hẳn là bình yên.</p>
             <h2 id="noise-heading" className="preserve-lines">
               {storyCopy.noise.heading}
             </h2>
             <p className="narrative preserve-lines">{storyCopy.noise.body}</p>
+            <div className="thought-untangler" aria-label="Gỡ từng nút thắt suy nghĩ">
+              <p className="thought-prompt-label">Chạm để gỡ một ý nghĩ nhỏ:</p>
+              <div className="thought-pills" role="group" aria-label="Các nốt suy nghĩ">
+                {noiseReflections.map((item, idx) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    className="thought-pill"
+                    aria-pressed={thoughtIndex === idx}
+                    onClick={() => setThoughtIndex(idx)}
+                  >
+                    <span aria-hidden="true">0{idx + 1}</span> {item.label}
+                  </button>
+                ))}
+              </div>
+              <p className="thought-whisper" key={thoughtIndex}>
+                “{noiseReflections[thoughtIndex].note}”
+              </p>
+            </div>
             <Link className="noise-reading-link" href="/stories?topic=within">
               Một trang cho những nghĩ suy chưa chịu đi ↗
             </Link>
@@ -137,6 +179,7 @@ export default function Story({
           aria-labelledby="becoming-heading"
         >
           <div className="scene-inner">
+            <div className="bloom-glow" aria-hidden="true" />
             <h2 className="chapter-label scene-title" id="becoming-heading">
               Chương 6 / Về phía ánh sáng
             </h2>
@@ -164,7 +207,8 @@ export default function Story({
         >
           JN.
         </a>
-        <span>© {year}</span>
+        <span>© {year} · Sổ tay ký ức</span>
+        <Link href="/stories">Góc đọc chuyện</Link>
         <Link href="/admin">Đăng nhập · Bàn viết ↗</Link>
         <a href="#beginning">
           Về lại trang đầu <span aria-hidden="true">↗</span>

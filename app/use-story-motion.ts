@@ -291,8 +291,11 @@ export function useStoryMotion(root: RefObject<HTMLDivElement | null>) {
         v.loop = v.dataset.name === "walk" || v.dataset.name === "noise";
         if(v.dataset.name === "walk") {
           const fog=v.parentElement!.querySelector<HTMLElement>(".loop-fog")!;
-          let frame=0;
-          const paint=()=>{fog.style.opacity=String(fogOpacity(v.currentTime,v.duration));};
+          let frame=0, looped=false;
+          const paint=()=>{
+            if(v.currentTime > 0.85) looped=true;
+            fog.style.opacity=String(!looped && v.currentTime < 0.75 ? 0 : fogOpacity(v.currentTime,v.duration));
+          };
           const tick=()=>{frame=0;if(!alive||v.paused||!visible.has(v)||document.hidden)return;paint();frame=v.requestVideoFrameCallback(tick);};
           const start=()=>{if("requestVideoFrameCallback" in v && !frame)frame=v.requestVideoFrameCallback(tick);};
           const stop=()=>{if(frame)v.cancelVideoFrameCallback(frame);frame=0;};

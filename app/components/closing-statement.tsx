@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Fragment, type CSSProperties } from "react";
 import { storyCopy } from "../content";
 /* Each word is its own span so the closing line can arrive word by word.
@@ -54,6 +55,19 @@ export default function ClosingStatement() {
           </em>
         </span>
       </h2>
+      <div className="closing-epilogue">
+        <p className="closing-whisper">
+          Những trang tiếp theo vẫn còn để ngỏ — cảm ơn bạn đã đi cùng tôi qua những khung hình đầu tiên.
+        </p>
+        <div className="closing-actions">
+          <Link className="ink-link" href="/stories">
+            Vào góc đọc chuyện <span aria-hidden="true">↗</span>
+          </Link>
+          <a className="closing-top-link" href="#beginning">
+            Lật lại từ Chương 1 <span aria-hidden="true">↑</span>
+          </a>
+        </div>
+      </div>
     </section>
   );
 }

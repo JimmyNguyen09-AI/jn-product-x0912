@@ -89,3 +89,68 @@
 .memory-caption>p:last-child{transition:color .3s}
 .album-stage[aria-busy="true"]~.memory-caption>p:last-child{color:var(--ink-muted)}
 @media(prefers-reduced-motion:reduce){.album-photo,.memory-choice,.memory-caption>p:last-child{transition:none}.album-photo:hover{translate:-50% -50%;rotate:none}}
+
+/* ---------- Chapter 4 & 5 Visual Elevations ---------- */
+.love.enhanced .scene-reading-link {
+  bottom: 5.2%;
+  opacity: calc(1 - var(--love-out, 0));
+}
+.love.enhanced .beats .beat {
+  text-shadow: 0 2px 18px rgba(253, 253, 252, 0.92);
+}
+.album-stage {
+  background: radial-gradient(
+    ellipse 64% 54% at 50% 52%,
+    rgba(232, 224, 206, 0.65) 0%,
+    rgba(232, 224, 206, 0.2) 56%,
+    transparent 78%
+  );
+}
+.memory-caption {
+  max-width: 680px;
+  padding: 22px 30px 24px;
+  background: #fdfcf8;
+  border: 1px solid #e2ddd2;
+  border-radius: 4px 6px 4px 5px;
+  box-shadow:
+    0 2px 6px rgba(48, 46, 42, 0.05),
+    0 12px 24px -16px rgba(48, 46, 42, 0.16);
+}
+.memory-vn-note {
+  display: block;
+  margin-top: 8px;
+  font-size: 19px;
+  line-height: 1.45;
+  color: var(--annotation);
+}
+.viewer-vn-note {
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.45;
+  color: var(--ink-muted);
+  margin: -6px auto 12px;
+  max-width: 760px;
+}
+.memory-viewer {
+  border: 1px solid #dcd6c8;
+  border-radius: 6px;
+}
+.memory-viewer::backdrop {
+  background: rgba(26, 24, 21, 0.68);
+  backdrop-filter: blur(4px);
+}
+@media (max-width: 600px) {
+  .love.enhanced .scene-reading-link {
+    bottom: 6%;
+  }
+  .memory-caption {
+    margin: 26px 5% 0;
+    padding: 18px 18px 20px;
+  }
+  .memory-vn-note {
+    font-size: 17px;
+  }
+  .viewer-vn-note {
+    font-size: 17px;
+  }
+}

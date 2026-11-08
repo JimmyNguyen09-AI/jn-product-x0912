@@ -7,6 +7,12 @@ import { memories, memoryThumbnail } from "../family-content";
 import { InkButton } from "./motion-system";
 
 const initialOrder = [0, 1, 2, 3];
+const memoryVnNotes = [
+  "Tổ ấm đầu tiên · Nơi bố, mẹ và anh trai luôn chờ tôi về.",
+  "Bên ngoại · Có những yêu thương vẫn ở lại, ngay cả khi ông đã đi xa.",
+  "Những buổi chiều thơ ấu · Năm anh em lớn lên cùng nhau trước những dự định riêng.",
+  "Hiên nhà ông bà nội · Thứ hơi ấm bình yên bên ấm trà chiều chẳng cần nhiều lời.",
+] as const;
 function photoPose(depth: number, compact: boolean) {
   const spread = compact ? .58 : 1;
   return [
@@ -171,7 +177,8 @@ export default function FamilyAlbum() {
         {memories.map((memory,index) => <InkButton key={memory.id} className="memory-choice" aria-pressed={front === index} aria-label={`Chọn ảnh ${memory.label}`} onClick={() => choose(index)}><span aria-hidden="true">0{index+1}</span>{memory.label}</InkButton>)}
       </div>
       <div className="memory-caption" data-active-memory={memories[front].id}>
-        <p className="chapter-label">{memories[front].label}</p>
+        <p className="chapter-label">0{front + 1} / 04 · {memories[front].label}</p>
+        <span className="memory-vn-note">{memoryVnNotes[front]}</span>
         <p>{memories[front].caption}</p>
       </div>
       <p className="sr-only" role="status" aria-atomic="true">{announcement}</p>
@@ -192,7 +199,7 @@ export default function FamilyAlbum() {
     }}>
       {viewer !== null && <div className="viewer-sheet">
         <div className="viewer-topline"><span>{String(viewer+1).padStart(2,"0")} / 04 · {memories[viewer].label}</span><InkButton ref={closeButton} className="viewer-close" onClick={closeViewer} aria-label="Đóng ảnh">Đóng <span aria-hidden="true">×</span></InkButton></div>
-        <figure><div className="viewer-image-wrap"><img className="viewer-preview" src={memoryThumbnail(viewer)} alt="" aria-hidden="true" width="960" height="720"/><img className="viewer-original" key={viewer} src={memories[viewer].original} alt={memories[viewer].alt} width="1448" height="1086" onLoad={event=>{event.currentTarget.dataset.ready="true";}}/></div><figcaption id="viewer-caption">{memories[viewer].caption}</figcaption></figure>
+        <figure><div className="viewer-image-wrap"><img className="viewer-preview" src={memoryThumbnail(viewer)} alt="" aria-hidden="true" width="960" height="720"/><img className="viewer-original" key={viewer} src={memories[viewer].original} alt={memories[viewer].alt} width="1448" height="1086" onLoad={event=>{event.currentTarget.dataset.ready="true";}}/></div><figcaption id="viewer-caption">{memories[viewer].caption}</figcaption><p className="viewer-vn-note">{memoryVnNotes[viewer]}</p></figure>
         <div className="viewer-actions"><InkButton className="text-button" aria-label="Ảnh trước" onClick={() => setViewer((viewer+3)%4)}>← Ảnh trước</InkButton><span aria-hidden="true">Một khoảng thời gian còn giữ lại được.</span><InkButton className="text-button" aria-label="Ảnh tiếp theo" onClick={() => setViewer((viewer+1)%4)}>Ảnh sau →</InkButton></div>
       </div>}
     </dialog>

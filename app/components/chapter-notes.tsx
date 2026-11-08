@@ -2,13 +2,14 @@ import Link from "next/link";
 import { topics, topicNames, type Topic } from "@/lib/types";
 import { Reveal } from "./motion-system";
 
-const notes: Record<Topic, { title: string; body: string; question: string; detail: string; words: string }> = {
+const notes: Record<Topic, { title: string; body: string; question: string; detail: string; words: string; epigraph: string }> = {
   alone: {
     title: "Một mình, mà vẫn muốn có ai đó gần.",
     body: "Những bước chân đầu tiên là chuyện tôi đi một mình, và cái mong có người đi cùng. Hai thứ ấy ở chung trong tôi khá lâu rồi: quen đi một mình, nhưng vẫn để mắt tìm một bàn tay để tin.",
     question: "Phía sau những bước chân là gì?",
     detail: "Mấy trang viết của chương này nói về khoảng cách giữa việc ở một mình và cảm thấy một mình. Bạn có thể bắt đầu từ đây, hoặc chọn chương nào gần với bạn lúc này hơn.",
     words: "Một mình · Kết nối · Những khởi đầu",
+    epigraph: "“Đi một mình đủ lâu để hiểu mình, nhưng vẫn để ngỏ một khoảng trời.”",
   },
   trust: {
     title: "Đưa tay ra cũng là một kiểu can đảm.",
@@ -16,6 +17,7 @@ const notes: Record<Topic, { title: string; body: string; question: string; deta
     question: "Còn lại gì sau một lần tin nhầm?",
     detail: "Đây là chỗ tôi viết về niềm tin và về giới hạn của mình. Không cần kể hết từng chi tiết mới được nói ra rằng một chuyện đã làm mình đau.",
     words: "Niềm tin · Khoảng cách · Giới hạn",
+    epigraph: "“Mỗi lần đưa tay ra là một lần đặt hy vọng lên lòng bàn tay.”",
   },
   within: {
     title: "Có những cuộc nói chuyện chỉ xảy ra trong đầu.",
@@ -23,6 +25,7 @@ const notes: Record<Topic, { title: string; body: string; question: string; deta
     question: "Những trang này viết cho điều gì?",
     detail: "Cho mấy câu hỏi chưa có lời đáp và những cảm giác khó gọi tên. Bạn không cần tìm ngay một kết luận. Đọc một đoạn thôi cũng được, rồi lúc khác quay lại.",
     words: "Nghĩ suy · Im lặng · Gọi tên cảm xúc",
+    epigraph: "“Trang giấy giữ giùm những câu chữ mà đêm khuya không nói thành lời.”",
   },
   love: {
     title: "Một đoạn đường chung, một tương lai dang dở.",
@@ -30,6 +33,7 @@ const notes: Record<Topic, { title: string; body: string; question: string; deta
     question: "Sao lại có một chương cho những điều dang dở?",
     detail: "Không phải chuyện nào cũng có một cái kết rõ ràng. Chương này cho những trang viết về sự gần gũi, về chia xa, và về những dự định chỉ từng có trong đầu.",
     words: "Gần gũi · Chia xa · Những điều chưa thành",
+    epigraph: "“Có những người đi qua để lại một khoảng mây ấm, dù chẳng đi đến cuối đường.”",
   },
   family: {
     title: "Nhìn lại những người ở quanh mình.",
@@ -37,6 +41,7 @@ const notes: Record<Topic, { title: string; body: string; question: string; deta
     question: "Bắt đầu từ một tấm ảnh thế nào?",
     detail: "Chọn tên một kỷ niệm trong album phía trên để đưa ảnh ra trước. Chạm vào ảnh để xem lớn, hoặc mở những trang viết của chương này để đọc tiếp về gia đình.",
     words: "Gia đình · Ký ức · Lớn lên cùng nhau",
+    epigraph: "“Nhà là nơi câu chuyện bắt đầu trước khi ta kịp nhớ.”",
   },
   becoming: {
     title: "Lớn lên không phải lúc nào cũng nhìn thấy được.",
@@ -44,17 +49,19 @@ const notes: Record<Topic, { title: string; body: string; question: string; deta
     question: "Sau chương này là gì?",
     detail: "Những trang viết mới sẽ tiếp tục xuất hiện trong Góc đọc. Bạn có thể đọc theo chương, tìm một cảm giác quen quen, hoặc quay lại với điều mình từng bỏ ngỏ.",
     words: "Hồi phục · Đổi thay · Những trang tiếp theo",
+    epigraph: "“Rễ bén trong bóng tối trước khi cánh hoa kịp chạm vào nắng ấm.”",
   },
 };
 
 export function ChapterNotes({ topic }: { topic: Topic }) {
   const note = notes[topic];
   const number = topics.indexOf(topic) + 1;
-  return <section id={`reading-${topic}`} className={`chapter-notes chapter-notes-${topic}`} aria-labelledby={`notes-${topic}`}>
+  return <section id={`reading-${topic}`} className={`chapter-notes chapter-notes-${topic} topic-${topic}`} aria-labelledby={`notes-${topic}`}>
     <Reveal className="chapter-note-heading">
       <p className="chapter-label">{topicNames[topic]} / Phía sau khung hình</p>
       <h2 id={`notes-${topic}`}>{note.title}</h2>
       <p className="chapter-keywords">{note.words}</p>
+      <p className="chapter-epigraph">{note.epigraph}</p>
     </Reveal>
     <Reveal className="chapter-note-body">
       <p>{note.body}</p>

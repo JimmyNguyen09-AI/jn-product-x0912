@@ -1225,3 +1225,315 @@ a.scene-reading-link:focus-visible {
     display: none;
   }
 }
+
+/* ---------- Artisanal Sketchbook & Editorial Elevations ---------- */
+.island {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 2px 6px rgba(48, 46, 42, 0.06),
+    0 12px 28px -14px rgba(48, 46, 42, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+.chapter-links a[aria-current] {
+  color: var(--annotation);
+  font-weight: 600;
+}
+
+/* Hero canvas framing: subtle warm halo + artist's corner registration ticks */
+.hero-halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(820px, 92vw);
+  height: min(620px, 74vh);
+  translate: -50% -50%;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    rgba(244, 238, 222, 0.5) 0%,
+    rgba(244, 238, 222, 0.16) 48%,
+    transparent 74%
+  );
+}
+.sketch-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  opacity: 0.42;
+  z-index: 2;
+}
+.sketch-corner::before,
+.sketch-corner::after {
+  content: "";
+  position: absolute;
+  background: var(--ink-muted);
+  border-radius: 1px;
+}
+.sketch-corner::before {
+  width: 100%;
+  height: 1px;
+}
+.sketch-corner::after {
+  width: 1px;
+  height: 100%;
+}
+.sketch-corner-tl {
+  top: 96px;
+  left: 4.5%;
+}
+.sketch-corner-tl::before,
+.sketch-corner-tl::after {
+  top: 0;
+  left: 0;
+}
+.sketch-corner-tr {
+  top: 96px;
+  right: 4.5%;
+}
+.sketch-corner-tr::before,
+.sketch-corner-tr::after {
+  top: 0;
+  right: 0;
+}
+.sketch-corner-bl {
+  bottom: 5.5%;
+  left: 4.5%;
+}
+.sketch-corner-bl::before,
+.sketch-corner-bl::after {
+  bottom: 0;
+  left: 0;
+}
+.sketch-corner-br {
+  bottom: 5.5%;
+  right: 4.5%;
+}
+.sketch-corner-br::before,
+.sketch-corner-br::after {
+  bottom: 0;
+  right: 0;
+}
+.clouds-enabled .hero .sketch-corner {
+  opacity: calc(0.42 * var(--hero-chrome-opacity, 1));
+}
+
+.scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(200, 195, 185, 0.7);
+  background: rgba(253, 252, 249, 0.82);
+  box-shadow: 0 2px 8px -4px rgba(48, 46, 42, 0.12);
+}
+
+/* Tactile bookmark slip for scene reading links */
+.enhanced a.scene-reading-link {
+  width: max-content;
+  max-width: 88vw;
+  margin-inline: auto;
+  padding: 7px 22px 9px;
+  border-radius: 999px;
+  background: rgba(253, 252, 249, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(200, 195, 185, 0.72);
+  box-shadow:
+    0 2px 6px rgba(48, 46, 42, 0.06),
+    0 8px 20px -10px rgba(48, 46, 42, 0.2);
+  text-decoration: none;
+  transition:
+    transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+.enhanced a.scene-reading-link:hover,
+.enhanced a.scene-reading-link:focus-visible {
+  transform: translateY(-2px);
+  background: #fffefb;
+  border-color: var(--annotation);
+  box-shadow:
+    0 4px 10px rgba(48, 46, 42, 0.09),
+    0 12px 24px -10px rgba(52, 76, 105, 0.25);
+}
+
+/* Chapter 3 (Noise): Torn diary sheet & interactive thought untangler */
+.noise-copy {
+  position: relative;
+  padding: 42px 38px 36px 44px;
+  background-color: #fdfcf8;
+  background-image:
+    linear-gradient(90deg, transparent 28px, rgba(189, 142, 36, 0.22) 28px, rgba(189, 142, 36, 0.22) 29px, transparent 29px),
+    repeating-linear-gradient(to bottom, transparent 0 35px, rgba(48, 46, 42, 0.055) 35px 36px);
+  border: 1px solid #e2ddd2;
+  border-radius: 3px 5px 4px 3px;
+  box-shadow:
+    0 2px 5px rgba(48, 46, 42, 0.06),
+    0 16px 32px -18px rgba(48, 46, 42, 0.2),
+    4px 5px 0 rgba(200, 195, 185, 0.28);
+}
+.diary-tape {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 96px;
+  height: 22px;
+  translate: -50% 0;
+  rotate: -1.8deg;
+  background: rgba(239, 230, 207, 0.72);
+  border: 1px solid rgba(216, 204, 174, 0.55);
+  box-shadow: 0 1px 2px rgba(48, 46, 42, 0.08);
+  pointer-events: none;
+}
+.thought-untangler {
+  margin: 26px 0 8px;
+  padding: 16px 18px;
+  border-radius: 6px;
+  background: rgba(244, 241, 231, 0.75);
+  border: 1px dashed #cfc9bc;
+}
+.thought-prompt-label {
+  font-size: 16px;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+.thought-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.thought-pill {
+  border: 1px solid var(--line);
+  background: #fdfcf9;
+  border-radius: 999px;
+  padding: 6px 13px;
+  font-size: 17px;
+  line-height: 1.25;
+  color: var(--ink);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.thought-pill span {
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-right: 4px;
+}
+.thought-pill:hover {
+  border-color: var(--annotation);
+  transform: translateY(-1px);
+}
+.thought-pill[aria-pressed="true"] {
+  background: var(--annotation);
+  color: var(--paper);
+  border-color: var(--annotation);
+}
+.thought-pill[aria-pressed="true"] span {
+  color: rgba(253, 253, 252, 0.75);
+}
+.thought-whisper {
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--annotation);
+  padding-left: 10px;
+  border-left: 2px solid var(--sunflower);
+}
+
+/* Chapter 6 (Becoming): Golden-hour sunflower aura */
+.bloom-glow {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(760px, 90vw);
+  height: min(640px, 75vh);
+  translate: -50% -50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: calc(0.18 + var(--video-progress, 0.4) * 0.72);
+  background: radial-gradient(
+    circle at 50% 48%,
+    rgba(232, 184, 58, 0.22) 0%,
+    rgba(189, 142, 36, 0.08) 45%,
+    transparent 72%
+  );
+  transition: opacity 0.2s linear;
+}
+
+/* Closing statement epilogue */
+.closing {
+  position: relative;
+  align-content: center;
+  gap: 34px;
+  background: radial-gradient(
+    ellipse at 50% 48%,
+    rgba(233, 212, 150, 0.18) 0%,
+    transparent 65%
+  );
+}
+.closing-epilogue {
+  text-align: center;
+  max-width: 620px;
+  margin: 8px auto 0;
+  padding-top: 22px;
+  border-top: 1px dashed var(--line);
+}
+.closing-whisper {
+  font-size: clamp(20px, 2vw, 24px);
+  color: var(--ink-muted);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+.closing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px 28px;
+}
+.closing-top-link {
+  font-size: 20px;
+  color: var(--ink-muted);
+  padding-bottom: 5px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.closing-top-link:hover,
+.closing-top-link:focus-visible {
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+@media (max-width: 600px) {
+  .sketch-corner {
+    display: none;
+  }
+  .noise-copy {
+    padding: 32px 22px 28px 28px;
+  }
+  .thought-pill {
+    font-size: 16px;
+    padding: 6px 11px;
+  }
+  .thought-whisper {
+    font-size: 18px;
+  }
+  .chapter-links a[data-subtitle]::after {
+    content: " · " attr(data-subtitle);
+    position: static;
+    background: none;
+    height: auto;
+    width: auto;
+    transform: none;
+    animation: none;
+    font-weight: 400;
+    color: var(--ink-muted);
+    font-size: 0.92em;
+  }
+}
